@@ -32,7 +32,7 @@ function Header() {
               </div>
               {/* small screen Login */}
               <div className="md:hidden block ">
-                <button className='bg-black  text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link><FontAwesomeIcon icon={faUser} />Login</Link></button>
+                <button className='bg-black  text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@ function Header() {
             <Link to={'/contact'} className='mx-3  md:my-0 my-2  font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Contact</Link>
           </div>
           <div className="md:block hidden">
-            <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link><FontAwesomeIcon icon={faUser} />Login</Link></button>
+            <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon  icon={faUser} />Login</Link></button>
           </div>
         </div>
 
