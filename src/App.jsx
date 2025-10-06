@@ -8,6 +8,7 @@ import Contact from './User/Pages/Contact'
 import LogReg from './Auth/LogReg'
 import Pnf from './Auth/Pnf'
 import View from './User/Pages/View'
+import Dashbord from './Admin/pages/Dashbord'
 function App() {
 
   return (
@@ -22,6 +23,10 @@ function App() {
           <Route path='/:id/view' element={<View/>} />
 
         <Route path='/*' element={<Pnf />} />
+        
+
+         <Route path='/admin' element={<Dashbord />} />
+
       </Routes>
 
     </>

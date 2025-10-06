@@ -45,7 +45,7 @@ function Landing() {
       <h1 className='font-bold text-3xl mb-5'>Recent Blogs</h1>
       <div className="md:grid grid-cols-4  gap-10 md:my-0 my-3">
         {/* card dupliacte */}
-        <div className='p-2 rounded shadow  md:my-0 my-3'>
+        <div className='p-2 rounded shadow hover:shadow-2xl  md:my-0 my-3'>
           <div style={{height:'200px'}}>
             <img src="/thumb.png" alt="Thubnail" className='bg-cover'  />
           </div>
@@ -59,7 +59,7 @@ function Landing() {
           </div>
         </div>
 
-        <div className='p-2 rounded shadow  md:my-0 my-3'>
+        <div className='p-2 rounded shadow hover:shadow-2xl   md:my-0 my-3'>
           <div style={{height:'200px'}}>
             <img src="https://tse4.mm.bing.net/th/id/OIP.IE1imfd_0Zi8rwbvjyrH1wHaE8?pid=Api&P=0&h=180" alt="Thubnail" className='bg-cover w-full h-full'  />
           </div>
