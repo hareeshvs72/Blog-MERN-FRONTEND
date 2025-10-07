@@ -9,6 +9,10 @@ import LogReg from './Auth/LogReg'
 import Pnf from './Auth/Pnf'
 import View from './User/Pages/View'
 import Dashbord from './Admin/pages/Dashbord'
+import AdminSidebar from './Admin/components/AdminSidebar'
+import Bloglist from './Admin/pages/Bloglist'
+import Create from './Admin/pages/Create'
+
 function App() {
 
   return (
@@ -25,7 +29,12 @@ function App() {
         <Route path='/*' element={<Pnf />} />
         
 
-         <Route path='/admin' element={<Dashbord />} />
+         <Route path='/admin-dashbord' element={<Dashbord />} />
+         
+         <Route path='/admin' element={<AdminSidebar />} />
+         <Route path='/admin-bloglist' element={<Bloglist />} />
+         <Route path='/admin-create' element={<Create />} />
+         
 
       </Routes>
 
