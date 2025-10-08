@@ -21,7 +21,7 @@ function Dashbord() {
         <div className="col-span-4 bg-green-100 min-h-screen ">
         <div className="md:grid grid-cols-4 md:mx-20 gap-2 md:mt-10">
               {/* Blogs */}
-          <div className="flex p-3 items-center shadow my-2">
+          <div className="flex p-3 items-center shadow my-2 ">
             <div className="p-3 bg-green-400 rounded-2xl mx-3">
               <FontAwesomeIcon icon={faSquarePlus} className="text-2xl" />
             </div>
