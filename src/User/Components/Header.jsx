@@ -2,6 +2,7 @@ import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-sv
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { easeIn, easeInOut, motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -9,7 +10,11 @@ function Header() {
   const [navBarBtn, setNavBarbtn] = useState(false)
   return (
     <>
-      <div>
+      <motion.div 
+        initial={{opacity:0, y:-100}}
+     animate={{opacity:1 , y:0}}
+     transition={{duration:.3 , ease:easeIn}}
+      >
         {/* First Header */}
         <div className="w-full py-1 md:px-10 px-2 flex justify-end text-green-400 items-center">
           <a href='#'  aria-label="Facebook" className='mx-2 text-2xl hover:text-black transition-colors' > <FontAwesomeIcon icon={faFacebook} /></a>
@@ -48,7 +53,7 @@ function Header() {
           </div>
         </div>
 
-      </div>
+      </motion.div>
 
 
     </>

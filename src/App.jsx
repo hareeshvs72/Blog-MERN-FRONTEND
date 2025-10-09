@@ -16,7 +16,7 @@ import Layout from './Admin/components/Layout'
 import Preload from './Auth/Preload'
 
 function App() {
- const [preload , setPreload]= useState(true)
+ const [preload , setPreload]= useState(false)
  setTimeout(() => {
        setPreload(false)
  }, 6000);

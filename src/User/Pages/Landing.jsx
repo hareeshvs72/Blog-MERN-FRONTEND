@@ -4,6 +4,7 @@ import Footer from '../Components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import { easeIn, easeOut, motion } from 'framer-motion'
 
 function Landing() {
   return (
@@ -11,9 +12,15 @@ function Landing() {
     <Header/>
       <>
       {/* hero section */}
-     <div className="w-full relative h-[400px]">
+     <motion.div
+     initial={{opacity:0}}
+     animate={{opacity:1}}
+     transition={{duration:1}}
+     
+      className="w-full relative h-[400px]">
   {/* Background Image */}
   <img 
+
     src="/hero.jpg" 
     alt="hero image"  
     className="w-full h-full object-cover" 
@@ -24,7 +31,11 @@ function Landing() {
 
   {/* Content on top */}
   <div className="absolute inset-0 flex items-center justify-center">
-    <div className="relative w-[300px]">
+    <motion.div 
+     initial={{opacity:0, y:-50}}
+     whileInView={{opacity:1 , y:0}}
+     transition={{duration:.8 , delay:.3}}
+    className="relative w-[300px]">
       <input 
         type="text" 
         placeholder="Search Blogs" 
@@ -36,16 +47,23 @@ function Landing() {
         icon={faMagnifyingGlass} 
         className="text-white cursor-pointer absolute top-1/2 right-4 -translate-y-1/2"  
       />
-    </div>
+    </motion.div>
   </div>
-   </div>
+   </motion.div>
 
    <section className='bg-green-100'>
      <div className='md:px-20 md:py-10 p-5 '>
       <h1 className='font-bold text-3xl mb-5'>Recent Blogs</h1>
       <div className="md:grid grid-cols-4  gap-10 md:my-0 my-3">
         {/* card dupliacte */}
-        <div className='p-2 rounded shadow hover:shadow-2xl  md:my-0 my-3'>
+        <motion.div 
+         
+         initial={{opacity:0, y:-50}}
+         whileInView={{opacity:1, y:0}}
+         transition={{duration:.5}}
+        
+         
+        className='p-2 rounded shadow hover:shadow-2xl  md:my-0 my-3'>
           <div style={{height:'200px'}}>
             <img src="/thumb.png" alt="Thubnail" className='bg-cover'  />
           </div>
@@ -57,7 +75,7 @@ function Landing() {
            </div>
             <button className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>Sports</button>
           </div>
-        </div>
+        </motion.div>
 
         <div className='p-2 rounded shadow hover:shadow-2xl   md:my-0 my-3'>
           <div style={{height:'200px'}}>
