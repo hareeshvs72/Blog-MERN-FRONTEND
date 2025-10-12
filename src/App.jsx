@@ -14,6 +14,7 @@ import Bloglist from './Admin/pages/Bloglist'
 import Create from './Admin/pages/Create'
 import Layout from './Admin/components/Layout'
 import Preload from './Auth/Preload'
+import Profile from './User/Pages/Profile'
 
 function App() {
  const [preload , setPreload]= useState(false)
@@ -30,7 +31,7 @@ function App() {
         <Route path='/register' element={<LogReg register />} />
         <Route path='/login' element={<LogReg />} />
         <Route path='/:id/view' element={<View />} />
-
+       <Route path='/profile' element={<Profile />} />
         <Route path='/*' element={<Pnf />} />
 
 
@@ -43,7 +44,7 @@ function App() {
        
 
       </Routes>
-
+ 
     </>
   )
 }

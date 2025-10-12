@@ -36,7 +36,7 @@ function Contact() {
             {/* form */}
             <motion.div
                 initial={{opacity:0, x:-30}}
-             whileInView={{opacity:1,x:0}}
+             animate={{opacity:1,x:0}}
              transition={{duration:.5, ease:easeIn}}
              className="bg-black w-full p-4  rounded  h-full">
               <form action="">
@@ -66,7 +66,7 @@ function Contact() {
               <div  >
                 <motion.div 
                    initial={{opacity:0, y:-30}}
-             whileInView={{opacity:1,y:0}}
+             animate={{opacity:1,y:0}}
              transition={{duration:.5, ease:easeIn}}
                 className='flex  cursor-pointer my-5'>
                   <FontAwesomeIcon icon={faEnvelope} className='bg-black text-green-400 rounded-full p-3 hover:bg-green-400 hover:text-black hover:border-2 border-black ' style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
@@ -78,7 +78,7 @@ function Contact() {
                 </motion.div>
                 <motion.div 
                      initial={{opacity:0, y:-30}}
-             whileInView={{opacity:1,y:0}}
+             animate={{opacity:1,y:0}}
              transition={{duration:.6, ease:easeIn}}
                 className='flex cursor-pointer my-5'>
                   <FontAwesomeIcon icon={faXTwitter} className='bg-black text-green-400 rounded-full p-3 hover:bg-green-400 hover:text-black hover:border-2 border-black ' style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
@@ -90,7 +90,7 @@ function Contact() {
                 </motion.div>
                 <motion.div 
                      initial={{opacity:0, y:-30}}
-             whileInView={{opacity:1,y:0}}
+             animate={{opacity:1,y:0}}
              transition={{duration:.7, ease:easeIn}}
                 className='flex cursor-pointer my-5'>
                   <FontAwesomeIcon icon={faInstagram} className='bg-black text-green-400 rounded-full p-3 hover:bg-green-400 hover:text-black hover:border-2 border-black ' style={{ width: '20px', height: '20px', borderRadius: '50%' }} />

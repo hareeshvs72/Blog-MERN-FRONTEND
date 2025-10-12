@@ -33,7 +33,7 @@ function Landing() {
   <div className="absolute inset-0 flex items-center justify-center">
     <motion.div 
      initial={{opacity:0, y:-50}}
-     whileInView={{opacity:1 , y:0}}
+     animate={{opacity:1 , y:0}}
      transition={{duration:.8 , delay:.3}}
     className="relative w-[300px]">
       <input 
@@ -59,7 +59,7 @@ function Landing() {
         <motion.div 
          
          initial={{opacity:0, y:-50}}
-         whileInView={{opacity:1, y:0}}
+         animate={{opacity:1, y:0}}
          transition={{duration:.5}}
         
          
