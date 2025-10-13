@@ -2,16 +2,80 @@
 import { faEye, faEyeSlash, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+import {registerApi,loginApi} from '../service/allAPI'
 
 function LogReg({ register }) {
+  const navigate = useNavigate()
   const [viewPasswordStatus, setViewPasswordStatus] = useState(false)
   const [userDetails, setUserDetails] = useState({
     username: '',
     email: '',
     password: ''
   })
+  // handiling register 
+
+  const handileRegister = async()=>{
+    const {username,email,password} = userDetails
+    if (!username || !email || !password) {
+      toast.info("Please fill the form Completely");
+    }
+    else {
+      // toast.success("proceed to api call")
+      try {
+        const result = await registerApi(userDetails)
+        console.log(result);
+
+        if (result.status == 200) {
+          toast.success("Register SucessFully !!! Please Login")
+          setUserDetails({ username: '',email: '', password: '' })
+          navigate('/login')
+        }
+        else if (result.status == 409) {
+          toast.warning(result.response.data)
+           setUserDetails({ username: '',email: '', password: '' })
+          navigate('/login')
+        }
+        else{
+          console.log(result);
+          
+        }
+      } catch (err) {
+        console.log(err);
+
+      }
+    }
+  }
+  // handile login 
+
+  const handileLogin = async()=>{
+       const {  email, password } = userDetails
+    if ( !email || !password) {
+      toast.info("Please fill the form Completely");
+    }
+    else {
+      // toast.success("proceed to api call")
+      try {
+        const result = await loginApi(userDetails)
+        console.log(result);
+
+        if (result.status == 200) {
+          
+        }
+        else if (result.status == 404) {
+         
+        }
+        else{
+          console.log(result);
+          
+        }
+      } catch (err) {
+        console.log(err);
+
+      }
+    }
+  }
   return (
     <>
       {/* Background Image */}
@@ -102,9 +166,15 @@ function LogReg({ register }) {
                   </div>
 
                   {/* Submit button */}
-                  <button className="flex items-center justify-center gap-2 text-black font-bold px-3 py-2 my-2 bg-green-400 w-full rounded border-2 border-transparent hover:border-green-400 hover:bg-black hover:text-green-400 transition">
-                    {register ? 'Register' : 'Login'}
+                  {register ? 
+                  <button type='button' onClick={handileRegister} className="flex items-center justify-center gap-2 text-black font-bold px-3 py-2 my-2 bg-green-400 w-full rounded border-2 border-transparent hover:border-green-400 hover:bg-black hover:text-green-400 transition">
+                    Register
                   </button>
+                  :
+                    <button type='button' className="flex items-center justify-center gap-2 text-black font-bold px-3 py-2 my-2 bg-green-400 w-full rounded border-2 border-transparent hover:border-green-400 hover:bg-black hover:text-green-400 transition">
+                    Login
+                  </button>
+                  }
 
                   {/* Divider */}
                   <div className="text-center my-3 text-white">
@@ -133,6 +203,13 @@ function LogReg({ register }) {
           </div>
         </div>
       </div>
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        pauseOnHover
+        theme="colored"
+
+      />
     </>
   )
 }
