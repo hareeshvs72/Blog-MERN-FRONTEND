@@ -1,13 +1,39 @@
 import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faUser } from '@fortawesome/free-regular-svg-icons'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faSquarePlus, faUser } from '@fortawesome/free-regular-svg-icons'
+import { faAddressCard, faBars, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { easeIn, easeInOut, motion } from 'framer-motion'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Header() {
   const [navBarBtn, setNavBarbtn] = useState(false)
+  const [token , setToken] = useState("")
+  const [dropDown , setDropDown] = useState(false)
+  const [userDp , setUserDp] = useState("")
+ 
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+   if(sessionStorage.getItem('token')){
+    const token = sessionStorage.getItem('token')
+    setToken(token)
+    const user = JSON.parse(sessionStorage.getItem('users'))
+    setUserDp(user.profile)
+    console.log(userDp)
+    
+   }
+  },[token])
+  console.log(userDp);
+  
+
+  const logout = ()=>{
+        sessionStorage.clear()
+        navigate('/')
+        setDropDown(false)
+        setToken("")
+  }
   return (
     <>
       <motion.div 
@@ -48,8 +74,27 @@ function Header() {
             <Link to={'/aboutus'} className='mx-3  md:my-0 my-2 font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >AboutUS</Link>
             <Link to={'/contact'} className='mx-3  md:my-0 my-2  font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Contact</Link>
           </div>
-          <div className="md:block hidden">
-            <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon  icon={faUser} />Login</Link></button>
+          {/* login link */}
+        <div>
+            { !token ?
+              <div className="md:block hidden">
+              <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon  icon={faUser} />Login</Link></button>
+            </div>
+            :
+            <div>
+              <img onClick={()=>setDropDown(!dropDown)} src={userDp == "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s" : userDp.startsWith('https://lh3.googleusercontent.com/'? userDp :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s" ) } alt="userImage" width={"40px"} height={'40px'} style={{borderRadius:'50%'}} />
+              
+                 { dropDown &&
+                        <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
+                        <div className="py-1 ">
+                          <Link className='block  py-2  text-sm text-gray-700' to={'/profile'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
+                          <Link className='block  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faSquarePlus} className='me-2 font-bold' /> Create </p></Link>
+                          <button type='button' onClick={logout} ><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout </button>
+                        </div>
+                      </div>}
+              </div>
+           
+            }
           </div>
         </div>
 

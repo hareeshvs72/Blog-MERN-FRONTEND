@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,10 +6,18 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 function Blog() {
+  const [token ,setToken] = useState("")
+  useEffect(()=>{
+   if(sessionStorage.getItem("token")){
+     setToken(sessionStorage.getItem("token"))
+   }
+  },[])
+  // console.log(token);
+  
   return (
     <>
       <Header />
-      <>
+      {token ?<>
 
         <div className='md:px-20 md:py-10 p-5 bg-green-100'>
          <div className='flex items-center w-full flex-col'>
@@ -73,6 +81,12 @@ function Blog() {
 
 
       </>
+     :
+     <div className='flex items-center justify-center flex-col '>
+      <img src="https://hailbytes.com/wp-content/uploads/2020/07/Login.gif" alt="login gif" />
+      <p className='my-5 font-semibold text-xl'>Please <Link to={'/login'} className='text-green-400' >Login</Link> To See More</p>
+     </div>  
+    }
       <Footer />
 
     </>

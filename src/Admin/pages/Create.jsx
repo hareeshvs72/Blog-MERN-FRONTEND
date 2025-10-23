@@ -7,12 +7,13 @@ import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 function Create() {
   return (
     <>
-      <AdminHeader />
+      {/* <AdminHeader /> */}
 
       <>
         <div className="md:grid grid-cols-5">
-          <div className="col-span-1 relative z-10">
-            <AdminSidebar />
+          <div className="col-span-1 bg-black relative z-10">
+          
+            {/* <AdminSidebar /> */}
           </div>
           <div className="col-span-4 bg-green-100 min-h-screen">
             <div className='md:mx-40 p-3 gap-2 md:mt-10'>
@@ -41,7 +42,7 @@ function Create() {
                     {/* sub Title */}
                   </div>
                   <div className='my-3 md:w-[500px]'>
-                    <label htmlFor="subtitle" className='font-semibold'>Blog Title</label>
+                    <label htmlFor="subtitle" className='font-semibold'>Sub Title</label>
                     <input
                       id='subtitle'
                       type="text"
@@ -60,11 +61,12 @@ function Create() {
                   </div>
                   <div className='my-3 flex flex-col md:w-[200px]'>
                     <label htmlFor="category">Blog Category</label>
-                    <select name="" id="" className='px-3 py-2 my-2 w-full bg-white rounded border-3 border-green-400 focus:outline-2 focus:border-0  focus:outline-green-900'>
-                      <option value="">Select Category</option>
-                      <option value="">Sports</option>
-                      <option value="">Life Style</option>
-                    </select>
+                     <input
+                      id='category'
+                      type="text"
+                      placeholder="Blog Category"
+                      className="px-3 py-2 my-2 w-full bg-white rounded border-3 border-green-400 focus:outline-2 focus:border-0  focus:outline-green-900"
+                    />
                   </div>
                   <button className="  flex items-center justify-center gap-2 text-black font-bold px-3 py-2 my-2 bg-green-400 md:w-[500px] rounded hover:border-2 hover:border-green-400 hover:bg-black border-2 border-transparent hover:text-green-400">
                     Upload

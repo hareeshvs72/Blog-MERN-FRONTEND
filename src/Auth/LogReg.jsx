@@ -4,8 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
-import {registerApi,loginApi} from '../service/allAPI'
+import {registerApi,loginApi,googleLoginApi} from '../service/allAPI'
+import {jwtDecode} from 'jwt-decode'
 
+
+import { GoogleLogin } from '@react-oauth/google'
 function LogReg({ register }) {
   const navigate = useNavigate()
   const [viewPasswordStatus, setViewPasswordStatus] = useState(false)
@@ -14,10 +17,10 @@ function LogReg({ register }) {
     email: '',
     password: ''
   })
-  // handiling register 
-
-  const handileRegister = async()=>{
-    const {username,email,password} = userDetails
+   //  register steps
+  const handileRegister = async () => {
+    console.log('Inside handileRegister ');
+    const { username, email, password } = userDetails
     if (!username || !email || !password) {
       toast.info("Please fill the form Completely");
     }
@@ -29,29 +32,29 @@ function LogReg({ register }) {
 
         if (result.status == 200) {
           toast.success("Register SucessFully !!! Please Login")
-          setUserDetails({ username: '',email: '', password: '' })
+          setUserDetails({ username: '', email: '', password: '' })
           navigate('/login')
         }
         else if (result.status == 409) {
           toast.warning(result.response.data)
-           setUserDetails({ username: '',email: '', password: '' })
+          setUserDetails({ username: '', email: '', password: '' })
           navigate('/login')
         }
-        else{
+        else {
           console.log(result);
-          
+          setUserDetails({ username: '', email: '', password: '' })
+
         }
       } catch (err) {
         console.log(err);
 
       }
     }
-  }
-  // handile login 
 
-  const handileLogin = async()=>{
-       const {  email, password } = userDetails
-    if ( !email || !password) {
+  }
+  const handileLogin = async () => {
+    const { email, password } = userDetails
+    if (!email || !password) {
       toast.info("Please fill the form Completely");
     }
     else {
@@ -61,14 +64,32 @@ function LogReg({ register }) {
         console.log(result);
 
         if (result.status == 200) {
-          
+          toast.success("Login Sucessfully !!!")
+          sessionStorage.setItem("users", JSON.stringify(result.data.user))
+          sessionStorage.setItem("token", result.data.token)
+          setTimeout(() => {
+            if (result.data.user.role == 'admin') {
+              navigate('/admin-dashbord')
+            }
+            else {
+              navigate('/')
+            }
+          },2500)
+        }
+        else if (result.status == 401) {
+          toast.warning(result.response.data)
+          setUserDetails({ username: '', email: '', password: '' })
+
+
         }
         else if (result.status == 404) {
-         
+          toast.warning(result.response.data)
+          setUserDetails({ username: '', email: '', password: '' })
+
         }
-        else{
-          console.log(result);
-          
+        else {
+          toast.error("something Went Wrong !!!")
+          setUserDetails({ username: '', email: '', password: '' })
         }
       } catch (err) {
         console.log(err);
@@ -76,6 +97,35 @@ function LogReg({ register }) {
       }
     }
   }
+  const handileGoogleLogin = async (credentialResponse)=>{
+         console.log('inside handileGoogle Login');
+         const credential = credentialResponse.credential
+         const details = jwtDecode(credential)
+         console.log(details);
+         const result = await googleLoginApi({username:details.name,email:details.email,password:"gogleloginpswd",profile:details.picture,})
+         console.log(result);
+
+         if (result.status == 200) {
+          toast.success("Login Sucessfully !!!")
+          sessionStorage.setItem("users", JSON.stringify(result.data.user))
+          sessionStorage.setItem("token", result.data.token)
+          setTimeout(() => {
+            if (result.data.user.role == 'admin') {
+              navigate('/admin-dashbord')
+            }
+            else {
+              navigate('/')
+            }
+          },2500)
+        }
+        else{
+           toast.error("something Went Wrong !!!")
+        }
+         
+
+         
+  }
+
   return (
     <>
       {/* Background Image */}
@@ -171,15 +221,30 @@ function LogReg({ register }) {
                     Register
                   </button>
                   :
-                    <button type='button' className="flex items-center justify-center gap-2 text-black font-bold px-3 py-2 my-2 bg-green-400 w-full rounded border-2 border-transparent hover:border-green-400 hover:bg-black hover:text-green-400 transition">
+                    <button type='button' onClick={handileLogin} className="flex items-center justify-center gap-2 text-black font-bold px-3 py-2 my-2 bg-green-400 w-full rounded border-2 border-transparent hover:border-green-400 hover:bg-black hover:text-green-400 transition">
                     Login
                   </button>
                   }
 
                   {/* Divider */}
-                  <div className="text-center my-3 text-white">
-                    ---------or------------
-                  </div>
+                   <div className='text-center my-3 text-white'>
+              {!register &&
+                <div className=''>
+                  <p>   ---------or------------</p>
+                 <GoogleLogin
+                    onSuccess={credentialResponse => {
+                      console.log(credentialResponse);
+                      handileGoogleLogin(credentialResponse)
+                    }}
+                    onError={() => {
+                      console.log('Login Failed');
+                    }}
+                  />
+
+                </div>
+
+              }
+            </div>
 
                   {/* Switch between login & register */}
                   {register ? (

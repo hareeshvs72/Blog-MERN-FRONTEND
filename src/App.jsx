@@ -42,7 +42,7 @@ function App() {
 
           
           <Route path='/admin-bloglist' element={<Bloglist />} />
-          <Route path='/admin-create' element={<Create />} />
+          <Route path='/create' element={<Create />} />
        
 
       </Routes>
