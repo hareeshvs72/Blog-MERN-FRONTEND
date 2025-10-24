@@ -21,3 +21,11 @@ export const loginApi = async(reqBody)=>{
 export const googleLoginApi = async(reqBody)=>{
   return await  CommonAPi("POST",`${BASEURL}/google-login`,reqBody)
 }
+
+
+// create blogs
+
+export const createBlogApi = async(reqBody,reqHeader)=>{
+  return await  CommonAPi("POST",`${BASEURL}/create`,reqBody,reqHeader)
+}
+
