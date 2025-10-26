@@ -29,3 +29,9 @@ export const createBlogApi = async(reqBody,reqHeader)=>{
   return await  CommonAPi("POST",`${BASEURL}/create`,reqBody,reqHeader)
 }
 
+// display blogs in blog component 
+
+export const displayBlogApi = async(reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/blog`,{},reqHeader)
+}
+

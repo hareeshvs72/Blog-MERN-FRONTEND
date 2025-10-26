@@ -15,6 +15,8 @@ import Create from './Admin/pages/Create'
 import Layout from './Admin/components/Layout'
 import Preload from './Auth/Preload'
 import Profile from './User/Pages/Profile'
+import Edit from './User/Pages/Edit'
+import UserBlogList from './User/Pages/UserBlogList'
 
 
 
@@ -34,6 +36,9 @@ function App() {
         <Route path='/login' element={<LogReg />} />
         <Route path='/:id/view' element={<View />} />
        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile-edit' element={<Edit />} />
+             <Route path='/user-blog' element={<UserBlogList/>} />
+        
         <Route path='/*' element={<Pnf />} />
 
 

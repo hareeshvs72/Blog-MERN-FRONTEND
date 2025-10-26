@@ -1,5 +1,5 @@
 import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faSquarePlus, faUser } from '@fortawesome/free-regular-svg-icons'
+import { faHome, faSquarePlus, faUser } from '@fortawesome/free-regular-svg-icons'
 import { faAddressCard, faBars, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { easeIn, easeInOut, motion } from 'framer-motion'
@@ -21,11 +21,11 @@ function Header() {
     setToken(token)
     const user = JSON.parse(sessionStorage.getItem('users'))
     setUserDp(user.profile)
-    console.log(userDp)
+    // console.log(userDp)
     
    }
   },[token])
-  console.log(userDp);
+  // console.log(userDp);
   
 
   const logout = ()=>{
@@ -87,8 +87,8 @@ function Header() {
                  { dropDown &&
                         <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
                         <div className="py-1 ">
-                          <Link className='block  py-2  text-sm text-gray-700' to={'/profile'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
-                          <Link className='block  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faSquarePlus} className='me-2 font-bold' /> Create </p></Link>
+                          <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/profile'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
+                          <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faHome} className='me-2 font-bold' /> DashBoard </p></Link>
                           <button type='button' onClick={logout} ><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout </button>
                         </div>
                       </div>}
