@@ -1,109 +1,157 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { easeIn, easeOut, motion } from 'framer-motion'
+import { displayLatestBlogInHomeApi } from '../../service/allAPI'
+import BASEURL from '../../service/serverURL'
+import { SearchContext } from '../../../ContextApi/CreateContext'
 
 function Landing() {
+  const [latestBlogs, setLatestBlogs] = useState([])
+  const { setSearchKey, searchKey } = useContext(SearchContext)
+  const navigate = useNavigate("")
+  console.log(latestBlogs);
+
+
+  useEffect(() => {
+    if (sessionStorage.getItem('token')) {
+      const Token = sessionStorage.getItem('token')
+      displayLatestBlogs(Token)
+    }
+  }, [])
+
+  const displayLatestBlogs = async (userToken) => {
+    console.log("displayLatestBlogs");
+
+    const reqHeader = {
+      "Authorization": `Bearer ${userToken}`
+    }
+    try {
+      const result = await displayLatestBlogInHomeApi(reqHeader)
+      console.log(result);
+      if (result.status == 200) {
+        setLatestBlogs(result.data)
+      }
+      else {
+        console.log(result);
+
+      }
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  const handileSearchIcon = () => {
+    navigate('/blog')
+  }
   return (
     <>
-    <Header/>
+      <Header />
       <>
-      {/* hero section */}
-     <motion.div
-     initial={{opacity:0}}
-     animate={{opacity:1}}
-     transition={{duration:1}}
-     
-      className="w-full relative h-[400px]">
-  {/* Background Image */}
-  <img 
+        {/* hero section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
 
-    src="/hero.jpg" 
-    alt="hero image"  
-    className="w-full h-full object-cover" 
-  />
+          className="w-full relative h-[400px]">
+          {/* Background Image */}
+          <img
 
-  {/* Dark Overlay */}
-  <div className="absolute inset-0 bg-black/40"></div>
+            src="/hero.jpg"
+            alt="hero image"
+            className="w-full h-full object-cover"
+          />
 
-  {/* Content on top */}
-  <div className="absolute inset-0 flex items-center justify-center">
-    <motion.div 
-     initial={{opacity:0, y:-50}}
-     animate={{opacity:1 , y:0}}
-     transition={{duration:.8 , delay:.3}}
-    className="relative w-[300px]">
-      <input 
-        type="text" 
-        placeholder="Search Blogs" 
-        className="h-12 w-full border-2 px-4 pr-12 
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/40"></div>
+
+          {/* Content on top */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: .8, delay: .3 }}
+              className="relative w-[300px]">
+              <input
+                onKeyDown={(e) => { e.key === "Enter" && handileSearchIcon() }}
+                onChange={(e) => setSearchKey(e.target.value)}
+                value={searchKey}
+                type="text"
+                placeholder="Search Blogs"
+                className="h-12 w-full border-2 px-4 pr-12 
                    bg-black/70 text-white outline-none 
-                   border-green-500 rounded-full"  
-      />
-      <FontAwesomeIcon 
-        icon={faMagnifyingGlass} 
-        className="text-white cursor-pointer absolute top-1/2 right-4 -translate-y-1/2"  
-      />
-    </motion.div>
-  </div>
-   </motion.div>
+                   border-green-500 rounded-full"
+              />
+              <button type='button'
+                onClick={handileSearchIcon}>
+                <FontAwesomeIcon
 
-   <section className='bg-green-100'>
-     <div className='md:px-20 md:py-10 p-5 '>
-      <h1 className='font-bold text-3xl mb-5'>Recent Blogs</h1>
-      <div className="md:grid grid-cols-4  gap-10 md:my-0 my-3">
-        {/* card dupliacte */}
-        <motion.div 
-         
-         initial={{opacity:0, y:-50}}
-         animate={{opacity:1, y:0}}
-         transition={{duration:.5}}
-        
-         
-        className='p-2 rounded shadow hover:shadow-2xl  md:my-0 my-3'>
-          <div style={{height:'200px'}}>
-            <img src="/thumb.png" alt="Thubnail" className='bg-cover'  />
-          </div>
-          <div>
-           <div>
-              <h1 className='text-2xl font-bold my-2'>Title</h1>
-              <p className='font-semibold text-justify'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aliquid quaerat labore quod illo tempore nobis aperiam culpa sequi voluptatum veniam reiciendis, velit tempora rerum vel alias quidem! Nam, odit.</p>
-              <Link to={'/:id/view'} className='text-green-900 font-bold underline cursour-pointer inline-block my-3' >Read More</Link>
-           </div>
-            <button className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>Sports</button>
+                  icon={faMagnifyingGlass}
+                  className="text-white cursor-pointer absolute top-1/2 right-4 -translate-y-1/2"
+                />
+              </button>
+            </motion.div>
           </div>
         </motion.div>
 
-        <div className='p-2 rounded shadow hover:shadow-2xl   md:my-0 my-3'>
-          <div style={{height:'200px'}}>
-            <img src="https://tse4.mm.bing.net/th/id/OIP.IE1imfd_0Zi8rwbvjyrH1wHaE8?pid=Api&P=0&h=180" alt="Thubnail" className='bg-cover w-full h-full'  />
-          </div>
-          <div>
-           <div>
-              <h1 className='text-2xl font-bold my-2'>Title</h1>
-              <p className='font-semibold text-justify'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aliquid quaerat labore quod illo tempore nobis aperiam culpa sequi voluptatum veniam reiciendis, velit tempora rerum vel alias quidem! Nam, odit.</p>
-              <Link to={'/:id/view'} className='text-green-900 font-bold underline cursour-pointer inline-block my-3' >Read More</Link>
-           </div>
-            <button className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>Sports</button>
-          </div>
-        </div>
-        
-      </div>
-      <div className='flex items-center justify-center my-3'>
-         <button className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>Explore More</button>
-      </div>
+        <section className='bg-green-100'>
+          <div className='md:px-20 md:py-10 p-5 '>
+            <h1 className='font-bold text-3xl mb-5'>Recent Blogs</h1>
+            <div className="md:grid grid-cols-4  gap-10 md:my-0 my-3">
+              {/* card dupliacte */}
 
-     </div>
-   </section>
+
+              {
+                latestBlogs?.length > 0 ?
+                  latestBlogs?.map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: -50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: .5 }}
+
+
+                      className='p-2 rounded shadow hover:shadow-2xl md:h-[400px] h-[480px]  md:my-0 my-3'>
+                      <div style={{ height: '200px' }}>
+                        <img style={{ width: "100%", height: "100%", borderRadius: '5px' }} src={`${BASEURL}/uploads/${item?.thumbnail}`} alt="Thubnail" className='bg-cover' />
+                      </div>
+                      <div>
+                        <div>
+                          <h1 className='text-2xl text-green-800 font-bold my-2'>{item?.title}</h1>
+                          <p className='font-semibold text-justify'>{item?.description.slice(0, 55)}</p>
+                          <Link to={`/${item?._id}/view`} className='text-green-900 font-bold underline cursour-pointer inline-block my-3' >Read More</Link>
+                        </div>
+                        <button className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>{item?.category}</button>
+                      </div>
+                    </motion.div>
+                  ))
+                  :
+                  <div>
+                    <p>NO Latest Blog Avilable........</p>
+                  </div>
+              }
+
+
+
+            </div>
+            <div className='flex items-center justify-center my-3'>
+              <button onClick={()=>navigate('/blog')} className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>Explore More</button>
+            </div>
+
+          </div>
+        </section>
       </>
-      
 
-    <Footer/>
-    
-    
+
+      <Footer />
+
+
     </>
   )
 }

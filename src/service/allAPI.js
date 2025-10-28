@@ -31,7 +31,13 @@ export const createBlogApi = async(reqBody,reqHeader)=>{
 
 // display blogs in blog component 
 
-export const displayBlogApi = async(reqHeader)=>{
-  return await  CommonAPi("GET",`${BASEURL}/blog`,{},reqHeader)
+export const displayBlogApi = async(searchValue,reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/blog?search=${searchValue}`,{},reqHeader)
 }
 
+
+// display latest blogs in home page 
+
+export const displayLatestBlogInHomeApi = async(reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/home`,{},reqHeader)
+}

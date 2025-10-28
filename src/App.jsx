@@ -15,8 +15,9 @@ import Create from './Admin/pages/Create'
 import Layout from './Admin/components/Layout'
 import Preload from './Auth/Preload'
 import Profile from './User/Pages/Profile'
-import Edit from './User/Pages/Edit'
 import UserBlogList from './User/Pages/UserBlogList'
+import ProfileCard from './User/Pages/ProfileCard'
+import ProfileEdit from './User/Pages/ProfileEdit'
 
 
 
@@ -36,8 +37,9 @@ function App() {
         <Route path='/login' element={<LogReg />} />
         <Route path='/:id/view' element={<View />} />
        <Route path='/profile' element={<Profile />} />
-        <Route path='/profile-edit' element={<Edit />} />
+        <Route path='/profile-edit' element={<ProfileEdit />} />
              <Route path='/user-blog' element={<UserBlogList/>} />
+              <Route path='/profilecard' element={<ProfileCard/>} />
         
         <Route path='/*' element={<Pnf />} />
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,17 +6,24 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { displayBlogApi, loginApi } from '../../service/allAPI'
 import BASEURL from '../../service/serverURL'
+import  { SearchContext } from '../../../ContextApi/CreateContext'
 function Blog() {
   const [token, setToken] = useState("")
   const [blogs, setBlogs] = useState([])
   const [category,setCategory] = useState([])
+ const [tempBlogs,setTempBlogs] = useState([])
+ const [allCategorsListStyle ,setAllCategoryListStyle] = useState("All")
+ const {searchKey,setSearchKey}= useContext(SearchContext)
+ console.log(searchKey);
+ 
 
-
+ const isActive ="font-bold bg-green-400 text-black px-4 rounded py-1 m-1"
+ const inActive = "font-bold bg-black text-green-400 px-4 rounded py-1 m-1"
    console.log(token);
    console.log(category);
    
 
-  useEffect(() => {
+  useEffect(() => { 
     if (sessionStorage.getItem("token")) {
 
       setToken(sessionStorage.getItem("token"))
@@ -24,13 +31,14 @@ function Blog() {
       DisplaylogAPi(token)
     }
 
-  }, [token])
+  },[token,searchKey])
   // category
   useEffect(() => {
   if (blogs.length > 0) {
-    const userCategory = blogs.map(items => items.category);
+    const tempCategory = tempBlogs.map(items => items.category);
+    const nonDupCategory = [...new Set(tempCategory)]
     // console.log("Updated categories:", userCategory);
-    setCategory(userCategory);
+    setCategory(nonDupCategory);
   }
 }, [blogs]);
  
@@ -44,11 +52,12 @@ function Blog() {
       "Authorization": `Bearer ${token}`
     }
     try {
-      const result = await displayBlogApi(reqHeader)
+      const result = await displayBlogApi(searchKey,reqHeader)
       if (result.status == 200) {
         console.log(result.data);
-
+            setTempBlogs(result.data)
         setBlogs(result.data)
+        
         // console.log(blogs);
     
          
@@ -63,7 +72,18 @@ function Blog() {
     }
   }
 
-
+ const handileCategory = (categoryarg)=>{
+         if(categoryarg == "All" ){
+          setBlogs(tempBlogs)
+          setSearchKey("")
+         }
+         else{
+          const filter =  tempBlogs.filter((item)=>item.category == categoryarg )  
+         console.log(filter);
+         setBlogs(filter)
+         }
+ }
+console.log(blogs);
 
   return (
     <>
@@ -80,6 +100,8 @@ function Blog() {
               <input
                 type="text"
                 placeholder="Search Blogs"
+                value={searchKey}
+                onChange={(e)=>setSearchKey(e.target.value)}
                 className="h-12 w-full border-2 px-4 pr-12 
                      bg-black/70 text-white outline-none 
                      border-green-500 rounded-full"
@@ -91,9 +113,16 @@ function Blog() {
             </div>
           </div>
           <div className='my-4 flex flex-wrap  justify-start w-full'>
-            <button className='foont-bold bg-black text-green-400 px-4 rounded py-1 m-1'> All</button>
-            <button className='foont-bold bg-black text-green-400 px-4 rounded py-1 m-1'> Sports</button>
-            <button className='foont-bold bg-black text-green-400 px-4 rounded py-1 m-1'> Life Style</button>
+            <button  onClick={()=>{handileCategory("All");setAllCategoryListStyle("All")}} className={allCategorsListStyle == "All" ? isActive : inActive}> All</button>
+           {
+            category.length>0 &&
+            category.map((item,index)=>(
+               <button key={index} type='button' onClick={()=>{handileCategory(item);setAllCategoryListStyle(item)}} className={allCategorsListStyle == item ? isActive : inActive}> {item}</button>
+            ))
+           
+          
+
+          }
 
           </div>
           <div className="md:grid grid-cols-4  gap-10 md:my-0 my-3">
