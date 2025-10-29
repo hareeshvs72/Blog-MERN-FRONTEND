@@ -1,11 +1,128 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import UserSidebar from '../Components/UserSidebar'
 import { faPen, } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faTwitter, faInstagram, faLinkedin, faGithub, } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toast, ToastContainer } from 'react-toastify'
+import { userProfileEditAPI } from '../../service/allAPI';
+import BASEURL from '../../service/serverURL';
 
 
 function ProfileEdit() {
+    const [userUpdate, setUserUpdate] = useState({
+        username: "", password: "", cPassword: "", profile: "", banner: "", bio: "", insta: "", github: "", twitterx: "", linkedin: ""
+    })
+    const [token, setToken] = useState('')
+    const [profilePreview, setProfilePreview] = useState("")
+    const [bannerPreview, setBannerPreview] = useState("")
+    const [existingBanner, setExistingBanner] = useState("")
+    const [existingProfile, setExistingProfile] = useState("")
+    const [updatedProfile, setUpdateProfile] = useState({})
+
+    //  const user details 
+
+    const [username, setUsername] = useState("");
+    const [usermail, setUsermail] = useState("");
+    const [banner, setBanner] = useState("");
+    const [profile, setProfile] = useState("");
+    const [linkedin, setLinkedin] = useState("");
+    const [insta, setInsta] = useState("");
+    const [twitterx, setTwitterx] = useState("");
+    const [github, setGithub] = useState("");
+    const [bio, setBio] = useState("");
+  
+    useEffect(() => {
+        if (sessionStorage.getItem("token")) {
+            const userToken = sessionStorage.getItem("token")
+            setToken(userToken)
+            const users = JSON.parse(sessionStorage.getItem("users"))
+            setUserUpdate({ ...userUpdate, username: users.username, password: users.password, cPassword: users.password, bio: users.bio, insta: users.insta, github: users.github, twitterx: users.twitterx, linkedin: users.linkedin })
+            setExistingBanner(users.banner)
+            setExistingProfile(users.profile)
+
+            // user details
+            setUsername(users.username );
+            setUsermail(users.email);
+            setBanner(users.banner );
+            setProfile(users.profile );
+            setLinkedin(users.linkedin );
+            setInsta(users.insta );
+            setTwitterx(users.twitterx );
+            setGithub(users.github );
+            setBio(users.bio );
+
+        }
+    }, [updatedProfile])
+
+    const handileReset = () => {
+        setUserUpdate({ username: "", password: "", cPassword: "", profile: "", banner: "", bio: "", insta: "", github: "", twitterx: "", linkedin: "" })
+        setBannerPreview("")
+        setProfilePreview("")
+    }
+
+    // banner url
+    const updatebanner = (e) => {
+        console.log("inside update banner");
+        setUserUpdate({ ...userUpdate, banner: e.target.files[0] })
+        console.log(e.target.files[0]);
+        const url = URL.createObjectURL(e.target.files[0])
+        console.log(url);
+        setBannerPreview(url)
+
+    }
+    //  profile url
+    const updateProfile = (e) => {
+        console.log("inside update banner");
+        setUserUpdate({ ...userUpdate, profile: e.target.files[0] })
+        console.log(e.target.files[0]);
+        const url = URL.createObjectURL(e.target.files[0])
+        console.log(url);
+        setProfilePreview(url)
+    }
+    // profile update
+
+    const handileUpdate = async () => {
+        console.log("insdied handile update");
+
+        const { username, password, cPassword, profile, banner, bio, insta, github, twitterx, linkedin } = userUpdate
+        if (!username || !password || !cPassword || !bio) {
+            toast.warning("please fill the box")
+        }
+        else if (password != cPassword) {
+            toast.warning("Incorrect Password Please Check CareFully !!!")
+        }
+        else {
+            const reqHeader = {
+                "Authorization": `Bearer ${token}`
+            }
+            const reqBody = new FormData()
+            for (let key in userUpdate) {
+                if (key == "profile" || key == "banner") {
+                    if (!userUpdate[key]) {
+                        continue;
+                    }
+                }
+                reqBody.append(key, userUpdate[key])
+
+            }
+            try {
+                const result = await userProfileEditAPI(reqBody, reqHeader)
+                if (result.status == 200) {
+                    toast.success("Profile Update SucessFully")
+                    console.log(result.data);
+                    sessionStorage.setItem("users", JSON.stringify(result.data))
+                    setUpdateProfile(result.data)
+                    handileReset()
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+
+    }
+
+
     return (
 
         <>
@@ -23,7 +140,7 @@ function ProfileEdit() {
                                 {/* Banner Section */}
                                 <div className="relative h-32 w-full">
                                     <img
-                                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=60"
+                                        src={banner == "" ? "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=60" : `${BASEURL}/uploads/${banner}`}
                                         alt="Banner"
                                         className="w-full h-32 object-cover"
                                     />
@@ -31,7 +148,7 @@ function ProfileEdit() {
 
                                     {/* Profile Image */}
                                     <img
-                                        src="https://i.pravatar.cc/150?img=3"
+                                        src={profile == "" ? "https://i.pravatar.cc/150?img=3" : `${BASEURL}/uploads/${profile}` }
                                         alt="Profile"
                                         className="w-28 h-28 rounded-full border-4 border-white absolute left-1/2 transform -translate-x-1/2 top-16"
                                     />
@@ -39,17 +156,17 @@ function ProfileEdit() {
 
                                 {/* User Info */}
                                 <div className="pt-16 pb-6 px-6 text-center">
-                                    <h2 className="text-2xl font-bold text-gray-800">Hareesh VS</h2>
-                                    <p className="text-sm text-gray-500 mb-3">hareesh@example.com</p>
+                                    <h2 className="text-2xl font-bold text-gray-800">{username}</h2>
+                                    <p className="text-sm text-gray-500 mb-3">{usermail}</p>
                                     <p className="text-gray-600 text-sm mb-6">
-                                        Full Stack Developer | Passionate about React, Node.js, and UI Design
+                                       {bio}
                                     </p>
 
                                     {/* Social Links */}
                                     <div className="flex justify-center space-x-5">
-                                 
+
                                         <a
-                                            href="https://twitter.com"
+                                            href={twitterx ==""? "https://twitter.com" : twitterx }
                                             target="_blank"
                                             rel="noreferrer"
                                             className="text-sky-500 hover:text-sky-700"
@@ -57,7 +174,7 @@ function ProfileEdit() {
                                             <FontAwesomeIcon icon={faTwitter} size="lg" />
                                         </a>
                                         <a
-                                            href="https://instagram.com"
+                                            href={insta==""? "https://instagram.com" : insta}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="text-pink-600 hover:text-pink-800"
@@ -65,7 +182,7 @@ function ProfileEdit() {
                                             <FontAwesomeIcon icon={faInstagram} size="lg" />
                                         </a>
                                         <a
-                                            href="https://linkedin.com"
+                                            href={linkedin == "" ?  "https://linkedin.com" : linkedin}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="text-blue-700 hover:text-blue-900"
@@ -73,7 +190,7 @@ function ProfileEdit() {
                                             <FontAwesomeIcon icon={faLinkedin} size="lg" />
                                         </a>
                                         <a
-                                            href="https://github.com"
+                                            href={github == "" ? "https://github.com" : github }
                                             target="_blank"
                                             rel="noreferrer"
                                             className="text-gray-700 hover:text-black"
@@ -101,14 +218,24 @@ function ProfileEdit() {
                                     {/* Profile Image Upload */}
                                     <div className="relative h-40 w-full">
                                         {/* Banner Image */}
-                                        <img
-                                            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=60"
-                                            alt="Banner"
-                                            className="w-full h-40 object-cover rounded-t-2xl"
-                                        />
+                                        {existingBanner
+                                            ?
+                                            <img
+                                                src={bannerPreview ? `${bannerPreview}` : "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=60"}
+                                                alt="Banner"
+                                                className="w-full h-40 object-cover rounded-t-2xl"
+                                            />
+                                            :
+                                            <img
+                                                src={bannerPreview ? `${bannerPreview}` : "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=60"}
+                                                alt="Banner"
+                                                className="w-full h-40 object-cover rounded-t-2xl"
+                                            />
+
+                                        }
 
                                         {/* Hidden File Input for Banner */}
-                                        <input type="file" id="bannerUpload" className="hidden" />
+                                        <input type="file" id="bannerUpload" onChange={(e) => updatebanner(e)} className="hidden" />
 
                                         {/* Edit Icon for Banner */}
                                         <label
@@ -122,14 +249,22 @@ function ProfileEdit() {
                                         {/* Profile Image */}
                                         <div className="absolute left-1/2 transform -translate-x-1/2 top-20">
                                             <div className="relative w-28 h-28">
-                                                <img
-                                                    src="https://i.pravatar.cc/150?img=3"
-                                                    alt="Profile"
-                                                    className="w-28 h-28 rounded-full border-4 border-white object-cover"
-                                                />
+                                                {existingProfile ?
+                                                    <img
+                                                        src={profilePreview ? profilePreview : "https://i.pravatar.cc/150?img=3"}
+                                                        alt="Profile"
+                                                        className="w-28 h-28 rounded-full border-4 border-white object-cover"
+                                                    />
+                                                    :
+                                                    <img
+                                                        src={profilePreview ? profilePreview : "https://i.pravatar.cc/150?img=3"}
+                                                        alt="Profile"
+                                                        className="w-28 h-28 rounded-full border-4 border-white object-cover"
+                                                    />
+                                                }
 
                                                 {/* Hidden File Input for Profile */}
-                                                <input type="file" id="profileUpload" className="hidden" />
+                                                <input onChange={(e) => updateProfile(e)} type="file" id="profileUpload" className="hidden" />
 
                                                 {/* Edit Icon for Profile */}
                                                 <label
@@ -152,6 +287,8 @@ function ProfileEdit() {
                                             type="text"
                                             placeholder="Enter username"
                                             className="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                                            value={userUpdate.username}
+                                            onChange={e => setUserUpdate({ ...userUpdate, username: e.target.value })}
                                         />
                                     </div>
 
@@ -167,6 +304,8 @@ function ProfileEdit() {
                                                 type="password"
                                                 placeholder="Enter new password"
                                                 className="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                                                value={userUpdate.password}
+                                                onChange={e => setUserUpdate({ ...userUpdate, password: e.target.value })}
                                             />
                                         </div>
 
@@ -179,6 +318,8 @@ function ProfileEdit() {
                                                 type="password"
                                                 placeholder="Confirm new password"
                                                 className="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                                                value={userUpdate.cPassword}
+                                                onChange={e => setUserUpdate({ ...userUpdate, cPassword: e.target.value })}
                                             />
                                         </div>
                                     </div>
@@ -192,6 +333,8 @@ function ProfileEdit() {
                                             placeholder="Write a short bio..."
                                             rows="3"
                                             className="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none resize-none"
+                                            value={userUpdate.bio}
+                                            onChange={e => setUserUpdate({ ...userUpdate, bio: e.target.value })}
                                         ></textarea>
                                     </div>
 
@@ -205,13 +348,15 @@ function ProfileEdit() {
 
                                         <div className="space-y-3 flex flex-col">
                                             <div className='flex'>
-                                                {/* Facebook */}
+                                                {/* github */}
                                                 <div className="flex items-center space-x-3">
-                                                   <FontAwesomeIcon icon={faGithub} className="text-gray-800" />
+                                                    <FontAwesomeIcon icon={faGithub} className="text-gray-800" />
                                                     <input
                                                         type="url"
                                                         placeholder="Facebook profile link"
                                                         className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                                                        value={userUpdate.github}
+                                                        onChange={e => setUserUpdate({ ...userUpdate, github: e.target.value })}
                                                     />
                                                 </div>
 
@@ -222,6 +367,8 @@ function ProfileEdit() {
                                                         type="url"
                                                         placeholder="Twitter profile link"
                                                         className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                                                        value={userUpdate.twitterx}
+                                                        onChange={e => setUserUpdate({ ...userUpdate, twitterx: e.target.value })}
                                                     />
                                                 </div>
                                             </div>
@@ -234,6 +381,8 @@ function ProfileEdit() {
                                                         type="url"
                                                         placeholder="Instagram profile link"
                                                         className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                                                        value={userUpdate.insta}
+                                                        onChange={e => setUserUpdate({ ...userUpdate, insta: e.target.value })}
                                                     />
                                                 </div>
 
@@ -244,6 +393,8 @@ function ProfileEdit() {
                                                         type="url"
                                                         placeholder="LinkedIn profile link"
                                                         className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                                                        value={userUpdate.linkedin}
+                                                        onChange={e => setUserUpdate({ ...userUpdate, linkedin: e.target.value })}
                                                     />
                                                 </div>
                                             </div>
@@ -254,6 +405,7 @@ function ProfileEdit() {
                                     {/* Submit Button */}
                                     <button
                                         type="button"
+                                        onClick={handileUpdate}
                                         className="w-full py-2 mt-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
                                     >
                                         Save Changes
@@ -267,6 +419,13 @@ function ProfileEdit() {
 
                 </div>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                pauseOnHover
+                theme="colored"
+
+            />
         </>
     )
 }

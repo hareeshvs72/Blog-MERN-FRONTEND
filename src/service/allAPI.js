@@ -3,6 +3,8 @@
 import CommonAPi from "./commonApi"
 import BASEURL from "./serverURL"
 
+
+//  --------------------- users --------------------
 // register when click btn in logreg component
 
 export const registerApi = async(reqBody)=>{
@@ -22,6 +24,13 @@ export const googleLoginApi = async(reqBody)=>{
   return await  CommonAPi("POST",`${BASEURL}/google-login`,reqBody)
 }
 
+// update user profile callled by Profile edit component
+
+  export const userProfileEditAPI = async(reqBody,reqHeader)=>{
+  return await  CommonAPi("PUT",`${BASEURL}/user-update`,reqBody,reqHeader)
+} 
+
+// ----------------------- Blogs ------------------------------------
 
 // create blogs
 
