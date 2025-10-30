@@ -17,20 +17,17 @@ function Landing() {
 
 
   useEffect(() => {
-    if (sessionStorage.getItem('token')) {
-      const Token = sessionStorage.getItem('token')
-      displayLatestBlogs(Token)
-    }
-  }, [])
+ 
+      displayLatestBlogs()
+    
+  },[])
 
-  const displayLatestBlogs = async (userToken) => {
+  const displayLatestBlogs = async () => {
     console.log("displayLatestBlogs");
 
-    const reqHeader = {
-      "Authorization": `Bearer ${userToken}`
-    }
+   
     try {
-      const result = await displayLatestBlogInHomeApi(reqHeader)
+      const result = await displayLatestBlogInHomeApi()
       console.log(result);
       if (result.status == 200) {
         setLatestBlogs(result.data)
@@ -117,7 +114,7 @@ function Landing() {
                       transition={{ duration: .5 }}
 
 
-                      className='p-2 rounded shadow hover:shadow-2xl md:h-[400px] h-[480px]  md:my-0 my-3'>
+                      className='p-2 rounded shadow hover:shadow-2xl md:h-[500px] h-[480px]  md:my-0 my-3'>
                       <div style={{ height: '200px' }}>
                         <img style={{ width: "100%", height: "100%", borderRadius: '5px' }} src={`${BASEURL}/uploads/${item?.thumbnail}`} alt="Thubnail" className='bg-cover' />
                       </div>

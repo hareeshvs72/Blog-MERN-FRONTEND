@@ -6,45 +6,50 @@ import { easeIn, easeInOut, motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import BASEURL from '../../service/serverURL'
 
 function Header() {
   const [navBarBtn, setNavBarbtn] = useState(false)
-  const [token , setToken] = useState("")
-  const [dropDown , setDropDown] = useState(false)
-  const [userDp , setUserDp] = useState("")
- 
+  const [token, setToken] = useState("")
+  const [dropDown, setDropDown] = useState(false)
+  const [userDp, setUserDp] = useState("")
+
   const navigate = useNavigate()
 
-  useEffect(()=>{
-   if(sessionStorage.getItem('token')){
-    const token = sessionStorage.getItem('token')
-    setToken(token)
-    const user = JSON.parse(sessionStorage.getItem('users'))
-    setUserDp(user.profile)
-    // console.log(userDp)
-    
-   }
-  },[token])
-  // console.log(userDp);
-  
+  useEffect(() => {
+    if (sessionStorage.getItem('token')) {
+      const token = sessionStorage.getItem('token')
+      setToken(token)
+      const user = JSON.parse(sessionStorage.getItem('users'))
+      setUserDp(user.profile)
+      console.log(userDp)
 
-  const logout = ()=>{
-        sessionStorage.clear()
-        navigate('/')
-        setDropDown(false)
-        setToken("")
+    }
+  }, [token])
+
+  useEffect(() => {
+    console.log("Updated userDp:", userDp)
+  }, [userDp])
+  // console.log(userDp);
+
+
+  const logout = () => {
+    sessionStorage.clear()
+    navigate('/')
+    setDropDown(false)
+    setToken("")
   }
   return (
     <>
-      <motion.div 
-        initial={{opacity:0, y:-100}}
-     animate={{opacity:1 , y:0}}
-     transition={{duration:.3 , ease:easeIn}}
+      <motion.div
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: .3, ease: easeIn }}
       >
         {/* First Header */}
         <div className="w-full py-1 md:px-10 px-2 flex justify-end text-green-400 items-center">
-          <a href='#'  aria-label="Facebook" className='mx-2 text-2xl hover:text-black transition-colors' > <FontAwesomeIcon icon={faFacebook} /></a>
-          <a href='#'  aria-label="instagram" className='mx-2 text-2xl  hover:text-black transition-colors'>  <FontAwesomeIcon icon={faInstagram} /></a>
+          <a href='#' aria-label="Facebook" className='mx-2 text-2xl hover:text-black transition-colors' > <FontAwesomeIcon icon={faFacebook} /></a>
+          <a href='#' aria-label="instagram" className='mx-2 text-2xl  hover:text-black transition-colors'>  <FontAwesomeIcon icon={faInstagram} /></a>
           <a href='#' aria-label="twitter x" className='mx-2 text-2xl  hover:text-black transition-colors'><FontAwesomeIcon icon={faXTwitter} /></a>
         </div>
 
@@ -75,25 +80,31 @@ function Header() {
             <Link to={'/contact'} className='mx-3  md:my-0 my-2  font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Contact</Link>
           </div>
           {/* login link */}
-        <div>
-            { !token ?
+          <div>
+            {!token ?
               <div className="md:block hidden">
-              <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon  icon={faUser} />Login</Link></button>
-            </div>
-            :
-            <div>
-              <img onClick={()=>setDropDown(!dropDown)} src={userDp == "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s" : userDp.startsWith('https://lh3.googleusercontent.com/'? userDp :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s" ) } alt="userImage" width={"40px"} height={'40px'} style={{borderRadius:'50%'}} />
-              
-                 { dropDown &&
-                        <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
-                        <div className="py-1 ">
-                          <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/profilecard'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
-                          <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faHome} className='me-2 font-bold' /> DashBoard </p></Link>
-                          <button type='button' onClick={logout} ><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout </button>
-                        </div>
-                      </div>}
+                <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
               </div>
-           
+              :
+              <div>
+                <img onClick={() => setDropDown(!dropDown)} src={
+                  userDp === ""
+                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
+                    : userDp.startsWith('https://lh3.googleusercontent.com/')
+                      ? userDp
+                      : `${BASEURL}/uploads/${userDp}`
+                } alt="userImage" width={"30px"} height={'30px'} style={{ borderRadius: '50%' }} />
+
+                {dropDown &&
+                  <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
+                    <div className="py-1 ">
+                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/profilecard'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
+                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faHome} className='me-2 font-bold' /> DashBoard </p></Link>
+                      <button type='button' onClick={logout} ><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout </button>
+                    </div>
+                  </div>}
+              </div>
+
             }
           </div>
         </div>

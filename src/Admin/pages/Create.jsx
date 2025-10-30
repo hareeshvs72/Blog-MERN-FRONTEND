@@ -19,7 +19,8 @@
       description:"",
       category:"",
       thumbnail:[],
-      allowUpload:false
+      allowUpload:false,
+      username:""
       
     })
     const [token,setToken] = useState("")
@@ -33,6 +34,8 @@
     useEffect(()=>{
       if(sessionStorage.getItem("token")){
         setToken(sessionStorage.getItem("token"))
+        const users = JSON.parse(sessionStorage.getItem("users"))
+        setBlogDetails({...blogDetails,username:users.username})
       }
     },[])
     console.log(token);
@@ -45,7 +48,8 @@
       description:"",
       category:"",
       thumbnail:[],
-      allowUpload:false
+      allowUpload:false,
+      username:""
       
     })
 
@@ -82,7 +86,7 @@
       const reqHeader = {
         "Authorization" : `Bearer ${token}`
       }
-    const {title,subTitle,description,category,thumbnail,allowUpload }= blogDetails
+    const {title,subTitle,description,category,thumbnail,allowUpload,username }= blogDetails
       if(!title || !subTitle || !description|| !category || thumbnail.length == 0 || allowUpload === false){
         toast.warning("Please Fill The Form Completedly")
         return

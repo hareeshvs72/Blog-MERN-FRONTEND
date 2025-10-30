@@ -47,6 +47,28 @@ export const displayBlogApi = async(searchValue,reqHeader)=>{
 
 // display latest blogs in home page 
 
-export const displayLatestBlogInHomeApi = async(reqHeader)=>{
-  return await  CommonAPi("GET",`${BASEURL}/home`,{},reqHeader)
+export const displayLatestBlogInHomeApi = async()=>{
+  return await  CommonAPi("GET",`${BASEURL}/home`)
 }
+
+// view a single blog 
+
+export const getSingleBlogViewAPI = async(blogId, reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/view/${blogId}/blog`,{},reqHeader)
+}
+
+
+// ----------------------- commnets  -----------------------
+
+
+// create new comments --- called by view componnet wen click on post button
+
+export const createNewCommentAPI = async(blogId,reqBody,reqHeader)=>{
+  return await  CommonAPi("POST",`${BASEURL}/create-comment/${blogId}`,reqBody,reqHeader)
+}
+
+// display all the comments
+export const getAllCommnetsAPI = async (blogId,reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/all-comment/${blogId}`,{},reqHeader)
+}
+
