@@ -23,6 +23,7 @@ const [allComments,setAllComments] = useState([])
 const [refresh,setRefresh]= useState(false)
 const [userDp,setUserdp] = useState("")
 // console.log(dateOnly);
+console.log(blog);
 
   
   useEffect(()=>{
@@ -126,9 +127,9 @@ console.log(allComments);
           <div>
             {/* Thumbnail */}
               
-              <div className="w-full h-72">
+              <div className="w-full h-120">
                 <img
-                  src={blog?.thumbnail ? `${BASEURL}/uploads/${blog?.thumbnail[0]}`: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80"}
+                  src={blog?.thumbnail ? `${BASEURL}/uploads/${blog?.thumbnail}`: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80"}
                   alt="Blog Thumbnail"
                   className="w-full h-full object-cover"
                 />

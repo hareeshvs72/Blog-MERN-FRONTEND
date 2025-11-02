@@ -24,7 +24,7 @@
       
     })
     const [token,setToken] = useState("")
-    const [thumPreview,setThumbPreview] = useState([])
+    const [thumPreview,setThumbPreview] = useState("")
     const navigate = useNavigate("")
 
     console.log(blogDetails);

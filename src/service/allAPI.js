@@ -57,6 +57,26 @@ export const getSingleBlogViewAPI = async(blogId, reqHeader)=>{
   return await  CommonAPi("GET",`${BASEURL}/view/${blogId}/blog`,{},reqHeader)
 }
 
+// update blog for individual users  - called by blogListComponent
+
+export const updateBlogApi = async(blogId,reqBody, reqHeader)=>{
+  return await  CommonAPi("PUT",`${BASEURL}/update-blog/${blogId}`,reqBody,reqHeader)
+}
+
+
+// get individual user blogs - called by user blog list component 
+
+
+export const getIndividualUserBlogAPi = async(reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/individual/user`,{},reqHeader)
+}
+
+// delete individual blog by id  - called by user blog list component 
+
+export const removeIndividualBlogsAPI = async(blogId)=>{
+  return await  CommonAPi("DELETE",`${BASEURL}/delete-blogs/${blogId}`)
+}
+
 
 // ----------------------- commnets  -----------------------
 
