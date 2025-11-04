@@ -27,9 +27,9 @@ function AdminSidebar() {
                <NavLink to={'/admin-dashbord'} className={({isActive})=>isActive ? active :notActive} >
                      <FontAwesomeIcon icon={faHouse} className='mx-2' />DashBord
                </NavLink>
-                <NavLink to={'/admin-create'} className={({isActive})=>isActive ? active :notActive} >
+                {/* <NavLink to={'/admin-create'} className={({isActive})=>isActive ? active :notActive} >
                      <FontAwesomeIcon icon={faCirclePlus}  className='mx-2' />Add Blog
-               </NavLink>
+               </NavLink> */}
                 <NavLink to={'/admin-bloglist'} className={({isActive})=>isActive ? active :notActive} >
                      <FontAwesomeIcon icon={faListCheck}   className='mx-2'/>Blog List
                </NavLink>

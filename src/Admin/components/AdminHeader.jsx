@@ -12,7 +12,7 @@ function AdminHeader() {
             <img src="/logo.png" alt="logo" width={'80px'} height={'80px'} />
         </div>
         <div>
-          <button className='px-4 bg-black text-green-400 font-bold py-2 hover:rounded-3xl'><Link to={'/'} ><FontAwesomeIcon icon={faPowerOff} />Logout</Link></button>
+          <button className='px-4 bg-black text-green-400 font-bold py-2 hover:rounded-3xl'><Link to={'/login'} ><FontAwesomeIcon icon={faPowerOff} />Logout</Link></button>
         </div>
 
     </div>

@@ -9,7 +9,7 @@ import CreateContext from '../ContextApi/CreateContext.jsx'
 createRoot(document.getElementById('root')).render(
 <BrowserRouter>
     <StrictMode>
-     <GoogleOAuthProvider clientId='746530431057-qt8hrmrblvibro7usqa6egootiatf58p.apps.googleusercontent.com'> 
+     <GoogleOAuthProvider  clientId='746530431057-qt8hrmrblvibro7usqa6egootiatf58p.apps.googleusercontent.com'> 
         <CreateContext><App /></CreateContext>
         </GoogleOAuthProvider>
     </StrictMode>
