@@ -132,8 +132,8 @@ function LogReg({ register }) {
       {/* Background Image */}
 
       {/* new login */}
-      <div className='h-screen relative z-20  flex-col w-full flex items-center justify-center bg-[url(https://d.furaffinity.net/art/cyber-ogurchik/1631193953/1631193761.cyber-ogurchik_2__1_.gif)] bg-cover '>
-      <div className='absolute -z-10 h-screen bg-black/70 w-full'>yjugtrfd</div>
+      <div className='h-screen relative z-20  flex-col w-full flex items-center justify-center bg-[url(/logbg.gif)] bg-cover '>
+      <div className='absolute -z-10 h-screen bg-black/70 w-full'></div>
 
         <div className='rounded-2xl w-[400px] p-5 bg-white' >
           {/* login */}

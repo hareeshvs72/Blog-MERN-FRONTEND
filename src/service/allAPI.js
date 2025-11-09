@@ -92,3 +92,12 @@ export const getAllCommnetsAPI = async (blogId,reqHeader)=>{
   return await  CommonAPi("GET",`${BASEURL}/all-comment/${blogId}`,{},reqHeader)
 }
 
+
+// ---------------------- admin -----------------------------------
+
+
+// get all blogs  by admin   - called by dashbord component
+
+export const getAllBlogsAdminAPI = async (reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/get-allblog-admin`,{},reqHeader)
+}

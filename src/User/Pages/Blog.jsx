@@ -148,20 +148,7 @@ console.log(blogs);
                 <p>no blogs are uploaded by any other users</p>
               </div>
             }
-            {/* del */}
-            {/* <div className='p-2 rounded shadow  hover:shadow-2xl  md:my-0 my-3'>
-          <div style={{height:'200px'}}>
-            <img src="https://tse4.mm.bing.net/th/id/OIP.IE1imfd_0Zi8rwbvjyrH1wHaE8?pid=Api&P=0&h=180" alt="Thubnail" className='bg-cover w-full h-full'  />
-          </div>
-          <div>
-           <div>
-              <h1 className='text-2xl font-bold my-2'>Title</h1>
-              <p className='font-semibold text-justify'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aliquid quaerat labore quod illo tempore nobis aperiam culpa sequi voluptatum veniam reiciendis, velit tempora rerum vel alias quidem! Nam, odit.</p>
-              <Link to={'/:id/view'} className='text-green-900 font-bold underline cursour-pointer inline-block my-3' >Read More</Link>
-           </div>
-            <button className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>Sports</button>
-          </div>
-        </div> */}
+          
 
           </div>
         </div>

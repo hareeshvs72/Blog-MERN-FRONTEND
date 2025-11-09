@@ -46,7 +46,10 @@ console.log(allComments);
     console.log("inside display comments");
     
     try {
-      const reqHeader = {
+      console.log("no token ", token);
+      
+    if(token){
+        const reqHeader = {
                 "Authorization": `Bearer ${token}`
             }
       const result = await getAllCommnetsAPI(id,reqHeader)
@@ -58,6 +61,7 @@ console.log(allComments);
         console.log("failed to get commnets",result);
         
       }
+    }
     } catch (error) {
       console.log(error);
       

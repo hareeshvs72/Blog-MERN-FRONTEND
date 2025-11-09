@@ -8,7 +8,7 @@ import { faBook } from "@fortawesome/free-solid-svg-icons"
 import { toast, ToastContainer } from 'react-toastify'
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { getIndividualUserBlogAPi, getSingleBlogViewAPI, removeIndividualBlogsAPI, updateBlogApi } from '../../service/allAPI'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BASEURL from '../../service/serverURL'
 
 function UserBlogList() {
@@ -18,6 +18,8 @@ function UserBlogList() {
   const navigate = useNavigate()
   const [thumPreview, setThumbPreview] = useState("")
   const [editModale, setEditModale] = useState(false)
+  const[dotModale,setDotModale] = useState(null)
+  
   const [blogId, setBlogId] = useState("")
   const [blogDetails, setBlogDetails] = useState({
     title: "",
@@ -236,22 +238,27 @@ function UserBlogList() {
           </div>
           <div className="md:mx-10 md:mt-10">
             <h1 className="text-green-400 text-xl font-bold">All Blogs</h1>
-            <table className="my-3 shadow w-full table-auto border-collapse">
-              <thead className="bg-gray-100">
+            <table className="my-3 shadow w-full table-auto bg-black p-3 rounded-xl">
+              <thead className="text-white">
                 <tr>
-                  <th className="px-4 py-2 text-left font-bold text-xl">#</th>
-                  <th className="px-4 py-2 text-left font-bold text-xl">Blog Title</th>
-                  <th className="px-4 py-2 text-left font-bold text-xl">Date</th>
-                  <th className="px-4 py-2 text-left font-bold text-xl">Status</th>
-                  <th className="px-4 py-2 text-left font-bold text-xl">Actions</th>
+                  {/* <th className="px-4 py-2 text-left font-bold text-xl">#</th> */}
+                  <th className="px-4 py-2 text-left font-semibold text-xl"> Title</th>
+                  <th className="px-4 py-2 text-left font-semibold text-xl">Date</th>
+                  <th className="px-4 py-2 text-left font-semibold text-xl">Status</th>
+                  <th className="px-4 py-2 text-left font-semibold text-xl">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              {/* duplicate blog list */}
+              <tbody >
                 {blogs?.length > 0 ?
                   blogs?.map((item, index) => (
-                    <tr key={item?._id} className="border-t">
-                      <td className="px-4 py-2 font-bold text-lg">{index + 1}</td>
-                      <td className="px-4 py-2">{item?.title}</td>
+                    <tr key={item?._id} className="text-green-400  ">
+                      {/* <td className="px-4 py-2 font-bold text-lg">{index + 1}</td> */}
+                      <td className="px-4 py-2 flex items-center">
+                        <img width={'70px'} height={'40px'} className='object-cover' src={`${BASEURL}/uploads/${item?.thumbnail}`} alt="" />
+
+                      <Link className='hover:underline ' to={`/${item?._id}/view`} > <h1 className='font-semibold mx-3'>  {item?.title}</h1></Link>
+                       </td>
                       <td className="px-4 py-2">{new Date(item?.createdAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
@@ -259,12 +266,16 @@ function UserBlogList() {
                       })}</td>
                       <td className="px-4 py-2 text-green-600 font-semibold">{item?.status}</td>
                       <td className="px-4 py-2">
-                        <button onClick={() => { getBlogId(item?._id) }} className="bg-black text-green-400 px-3 py-1 rounded">
-                          <FontAwesomeIcon icon={faPenToSquare} />
-                        </button>
-                        <button onClick={() => deleteBlogs(item?._id)} className="bg-black text-green-400 px-3 py-1 ml-2 rounded">
-                          <FontAwesomeIcon icon={faTrash} />
-                        </button>
+                        <button className='relative p-3 cursor-pointer bg-white rounded-2xl' onClick={()=>setDotModale(dotModale === item?._id ? null : item?._id)}><img src="/3dot.png" alt="3 dot" width={'20px'} /></button>
+                      {dotModale === item?._id &&
+                        <div className="absolute  bg-white border shadow-md rounded p-2 mt-1 z-10">
+                          <button onClick={() => { getBlogId(item?._id) }} className="bg-black text-green-400 px-3 py-1 rounded">
+                            <FontAwesomeIcon icon={faPenToSquare} />
+                          </button>
+                          <button onClick={() => deleteBlogs(item?._id)} className="bg-black text-green-400 px-3 py-1 ml-2 rounded">
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </div>}
                       </td>
                     </tr>
                   ))
