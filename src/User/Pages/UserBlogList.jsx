@@ -220,8 +220,8 @@ function UserBlogList() {
                 <FontAwesomeIcon icon={faComments} className="text-2xl  text-black" />
               </div>
               <div>
-                <h1 className="text-center font-bold text-2xl">2</h1>
-                <h3 className="text-center font-bold text-2xl">Comments</h3>
+                <h1 className="text-center font-bold text-2xl">{blogs?.filter(item=>item.status == "Aproved").length}</h1>
+                <h3 className="text-center font-bold text-2xl">Aproved</h3>
               </div>
             </div>
 
@@ -304,15 +304,14 @@ function UserBlogList() {
                     <p className='text-center'>Upload</p>
                   </label>
 
-                  <div className=''>
+                  <div  className='my-3 h-24 w-50'>
                     <img
                       src={thumPreview.startsWith("blob:")
                         ? thumPreview
                         : `${BASEURL}/uploads/${thumPreview}`
                       }
                       alt="thumbnail preview"
-                      width="100px"
-                      height="100px"
+                      className='mx-2 w-full h-full'
                     />
 
                   </div>

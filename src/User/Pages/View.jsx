@@ -214,7 +214,7 @@ console.log(allComments);
               {/* Existing Comments */}
               <div className="space-y-5">
                 {/* Comment 1 */}
-             {allComments?.length > 0 ?
+             {allComments?.length > 0 &&
              allComments?.map((items,index)=>(
                 <div key={index} className="flex items-start space-x-3">
                   <img
@@ -232,10 +232,7 @@ console.log(allComments);
                 </div>
              ))
               
-                :
-                <div>
-                  <p>There IS no Commnet Added By Any Other uSer</p>
-                </div>  
+                
               }
 
              

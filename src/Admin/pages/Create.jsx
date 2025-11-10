@@ -65,13 +65,15 @@
         console.log(fileArray);
         
         fileArray.push(e.target.files[0])
+       
           console.log(fileArray);
       setBlogDetails({...blogDetails,thumbnail:fileArray})
         const url  = URL.createObjectURL(e.target.files[0])
+         setThumbPreview(url)
         if(thumPreview.length < 1){
               const thumbnailSamble = thumPreview
         thumbnailSamble.push(url)
-        setThumbPreview(thumbnailSamble)
+        // setThumbPreview(thumbnailSamble)
         }
     
         console.log(url);
@@ -155,8 +157,8 @@
                           <p className='text-center'>Upload</p>
                         </label>
                     
-                      <div className=''>
-                      {thumPreview != "" && <img src={thumPreview} alt="thumbnail preview" width={'100px'} className='mx-2' height={'100px'} />}
+                      <div className='my-3 h-24 w-50'>
+                      {thumPreview != "" && <img src={thumPreview} alt="thumbnail preview" width={'100px'} className='mx-2 w-full h-full' height={'100px'} />}
                       </div>
                       </div>
                   </div>

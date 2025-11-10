@@ -51,7 +51,7 @@ function UserList() {
                                     <div key={index} className="p-3 rounded bg-white shadow flex items-center">
                                         <div className="mx-3">
 
-                                            <img width={'40px'} height={'70px'} style={{ borderRadius: "50%" }} src={
+                                            <img className="w-10 h-10 rounded-full" style={{ borderRadius: '50%' }} src={
                                                 items?.profile === ""
                                                     ? "https://d2kf8ptlxcina8.cloudfront.net/YH5TFCE1QY-preview.png"
                                                     : items?.profile.startsWith('https://lh3.googleusercontent.com/')

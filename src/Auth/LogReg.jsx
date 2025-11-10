@@ -1,7 +1,7 @@
 
 import { faEye, faEyeSlash, faLock, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import { registerApi, loginApi, googleLoginApi } from '../service/allAPI'
@@ -10,7 +10,11 @@ import { jwtDecode } from 'jwt-decode'
 
 import { GoogleLogin } from '@react-oauth/google'
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
+import { autherisedContext } from '../context/AutherisedUserContext'
+
 function LogReg({ register }) {
+    const { authorisedUser, setAuthorisedUser, role } = useContext(autherisedContext)
+  
   const navigate = useNavigate()
   const [viewPasswordStatus, setViewPasswordStatus] = useState(false)
   const [userDetails, setUserDetails] = useState({
@@ -33,6 +37,7 @@ function LogReg({ register }) {
 
         if (result.status == 200) {
           toast.success("Register SucessFully !!! Please Login")
+          setAuthorisedUser(true)
           setUserDetails({ username: '', email: '', password: '' })
           navigate('/login')
         }
@@ -68,6 +73,7 @@ function LogReg({ register }) {
           toast.success("Login Sucessfully !!!")
           sessionStorage.setItem("users", JSON.stringify(result.data.user))
           sessionStorage.setItem("token", result.data.token)
+          setAuthorisedUser(true)
           setTimeout(() => {
             if (result.data.user.role == 'admin') {
               navigate('/admin-dashbord')

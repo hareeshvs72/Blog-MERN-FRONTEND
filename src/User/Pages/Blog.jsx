@@ -125,7 +125,7 @@ console.log(blogs);
           }
 
           </div>
-          <div className="md:grid grid-cols-4  gap-10 md:my-0 my-3">
+          <div className={`${blogs?.length > 0 ?"md:grid grid-cols-4":"" }  gap-10 md:my-0 my-3`}>
             {/* card dupliacte */}
             {blogs?.length > 0 ?
             
@@ -144,10 +144,12 @@ console.log(blogs);
                     <button className='px-4 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>{items?.category}</button>
                   </div>
                 </div>))
-              :
-              <div>
-                <p>no blogs are uploaded by any other users</p>
+                :
+                <div className='w-full h-[400px]'>
+                <img className='w-full h-full bg-cover object-cover' src="/loader.gif" alt="loader" />
               </div>
+              
+              
             }
           
 
@@ -159,7 +161,7 @@ console.log(blogs);
       </>
         :
         <div className='flex items-center justify-center flex-col '>
-          <img src="https://hailbytes.com/wp-content/uploads/2020/07/Login.gif" alt="login gif" />
+          <img src="/blogLogin.gif" alt="login gif" />
           <p className='my-5 font-semibold text-xl'>Please <Link to={'/login'} className='text-green-400' >Login</Link> To See More</p>
         </div>
       }

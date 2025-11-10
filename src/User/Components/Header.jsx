@@ -68,7 +68,32 @@ function Header() {
               </div>
               {/* small screen Login */}
               <div className="md:hidden block ">
-                <button className='bg-black  text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
+                {/* <button className='bg-black  text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button> */}
+                  {!token ?
+              <div className="md:block hidden">
+                <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
+              </div>
+              :
+              <div>
+                <img  className="w-10 h-10 rounded-full" style={{ borderRadius: '50%' }} onClick={() => setDropDown(!dropDown)} src={
+                  userDp === ""
+                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
+                    : userDp.startsWith('https://lh3.googleusercontent.com/')
+                      ? userDp
+                      : `${BASEURL}/uploads/${userDp}`  
+                } alt="userImage"  />
+
+                {dropDown &&
+                  <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
+                    <div className="py-1 ">
+                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/profilecard'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
+                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faHome} className='me-2 font-bold' /> DashBoard </p></Link>
+                      <button type='button' onClick={logout} ><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout </button>
+                    </div>
+                  </div>}
+              </div>
+
+            }
               </div>
             </div>
           </div>
@@ -86,13 +111,13 @@ function Header() {
                 <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
               </div>
               :
-              <div>
-                <img width={"50px"} height={'50px'}   className=" object-cover" style={{ borderRadius: '50%' }} onClick={() => setDropDown(!dropDown)} src={
+              <div className="md:block hidden">
+                <img  className="w-10 h-10 rounded-full" style={{ borderRadius: '50%' }} onClick={() => setDropDown(!dropDown)} src={
                   userDp === ""
                     ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
                     : userDp.startsWith('https://lh3.googleusercontent.com/')
                       ? userDp
-                      : `${BASEURL}/uploads/${userDp}`
+                      : `${BASEURL}/uploads/${userDp}`  
                 } alt="userImage"  />
 
                 {dropDown &&

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Landing from './User/Pages/Landing'
@@ -19,44 +19,52 @@ import ProfileCard from './User/Pages/ProfileCard'
 import ProfileEdit from './User/Pages/ProfileEdit'
 import UserList from './Admin/pages/UserList'
 import AdminSettings from './Admin/pages/AdminSettings'
+import { autherisedContext } from './context/AutherisedUserContext'
 
 
 
 function App() {
- const [preload , setPreload]= useState(false)
- setTimeout(() => {
-       setPreload(false)
- }, 6000);
+  const [preload, setPreload] = useState(false)
+  const { authorisedUser, setAuthorisedUser, role } = useContext(autherisedContext)
+  setTimeout(() => {
+    setPreload(false)
+  }, 3000);
   return (
     <>
       <Routes>
-        <Route path='/' element={preload ? <Preload/> : <Landing />} />
-        <Route path='/blog' element={<Blog />} />
+        <Route path='/' element={preload ? <Preload /> : <Landing />} />
         <Route path='/aboutus' element={<AboutUs />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/register' element={<LogReg register />} />
-        <Route path='/login' element={<LogReg />} />
-        <Route path='/:id/view' element={<View />} />
-       <Route path='/profile' element={<Profile />} />
-        <Route path='/profile-edit' element={<ProfileEdit />} />
-             <Route path='/user-blog' element={<UserBlogList/>} />
-              <Route path='/profilecard' element={<ProfileCard/>} />
-                 <Route path='/create' element={<Create />} />
-        
-      
+          <Route path='/blog' element={<Blog />} />
+           <Route path='/login' element={<LogReg />} />
 
 
-        
+        {role == "user" && <>
+
+         
+          <Route path='/:id/view' element={<View />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile-edit' element={<ProfileEdit />} />
+          <Route path='/user-blog' element={<UserBlogList />} />
+          <Route path='/profilecard' element={<ProfileCard />} />
+          <Route path='/create' element={<Create />} />
+
+        </>}
+
+
+        {role == "admin" && <>
           <Route path='/admin-dashbord' element={<Dashbord />} />
           <Route path='/admin-userlist' element={<UserList />} />
-            <Route path='/admin-settings' element={<AdminSettings />} />
+          <Route path='/admin-settings' element={<AdminSettings />} />
+        </>}
 
-            <Route path='/*' element={<Pnf />} />
-       
-       
+        <Route path='/*' element={<Pnf />} />
+
+
 
       </Routes>
- 
+
     </>
   )
 }
