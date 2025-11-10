@@ -24,7 +24,7 @@ import { autherisedContext } from './context/AutherisedUserContext'
 
 
 function App() {
-  const [preload, setPreload] = useState(false)
+  const [preload, setPreload] = useState(true)
   const { authorisedUser, setAuthorisedUser, role } = useContext(autherisedContext)
   setTimeout(() => {
     setPreload(false)
