@@ -264,7 +264,7 @@ function UserBlogList() {
                         month: "short",
                         day: "numeric",
                       })}</td>
-                      <td className="px-4 py-2 text-green-600 font-semibold">{item?.status}</td>
+                      <td className={`px-4 py-2 font-semibold ${item?.status == "Aproved" ?  "text-green-600" : "text-red-600"  }`}>{item?.status}</td>
                       <td className="px-4 py-2">
                         <button className='relative p-3 cursor-pointer bg-white rounded-2xl' onClick={()=>setDotModale(dotModale === item?._id ? null : item?._id)}><img src="/3dot.png" alt="3 dot" width={'20px'} /></button>
                       {dotModale === item?._id &&

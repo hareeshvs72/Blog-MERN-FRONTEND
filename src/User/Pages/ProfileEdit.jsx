@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import UserSidebar from '../Components/UserSidebar'
 import { faPen, } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faTwitter, faInstagram, faLinkedin, faGithub, } from "@fortawesome/free-brands-svg-icons";
@@ -6,9 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast, ToastContainer } from 'react-toastify'
 import { userProfileEditAPI } from '../../service/allAPI';
 import BASEURL from '../../service/serverURL';
+import { userUpdateContext } from '../../context/contextApi';
 
 
 function ProfileEdit() {
+      const {userEditresponse,setUserEditResponse} = useContext(userUpdateContext)
     const [userUpdate, setUserUpdate] = useState({
         username: "", password: "", cPassword: "", profile: "", banner: "", bio: "", insta: "", github: "", twitterx: "", linkedin: ""
     })
@@ -111,6 +113,7 @@ function ProfileEdit() {
                     toast.success("Profile Update SucessFully")
                     console.log(result.data);
                     sessionStorage.setItem("users", JSON.stringify(result.data))
+                    setUserEditResponse(result.data)
                     setUpdateProfile(result.data)
                     handileReset()
                 }

@@ -30,6 +30,13 @@ export const googleLoginApi = async(reqBody)=>{
   return await  CommonAPi("PUT",`${BASEURL}/user-update`,reqBody,reqHeader)
 } 
 
+// update admin profile
+
+export const updateAdminProfile = async (reqBody, reqHeader) => {
+  return await CommonAPi("PUT", `${BASEURL}/admin-profile-edit`, reqBody, reqHeader);
+};
+
+
 // ----------------------- Blogs ------------------------------------
 
 // create blogs
@@ -112,5 +119,5 @@ export const getAllUserAdminApi = async (reqHeader)=>{
 // update blog status
 
 export const updateBlogStatusAPI = async(reqBody,reqHeader)=>{
-  return await  CommonAPi("PUT",`${BASEURL}/update-status}`,reqBody,reqHeader)
+  return await  CommonAPi("PUT",`${BASEURL}/update-status`,reqBody,reqHeader)
 }

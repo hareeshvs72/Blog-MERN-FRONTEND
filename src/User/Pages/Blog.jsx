@@ -128,6 +128,7 @@ console.log(blogs);
           <div className="md:grid grid-cols-4  gap-10 md:my-0 my-3">
             {/* card dupliacte */}
             {blogs?.length > 0 ?
+            
               blogs?.map((items, index) => (
                 <div key={index} className='p-2 rounded shadow hover:shadow-2xl   md:my-0 my-3'>
                   <div style={{ height: '200px' }}>

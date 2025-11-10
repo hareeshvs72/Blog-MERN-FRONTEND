@@ -18,6 +18,7 @@ import UserBlogList from './User/Pages/UserBlogList'
 import ProfileCard from './User/Pages/ProfileCard'
 import ProfileEdit from './User/Pages/ProfileEdit'
 import UserList from './Admin/pages/UserList'
+import AdminSettings from './Admin/pages/AdminSettings'
 
 
 
@@ -40,16 +41,18 @@ function App() {
         <Route path='/profile-edit' element={<ProfileEdit />} />
              <Route path='/user-blog' element={<UserBlogList/>} />
               <Route path='/profilecard' element={<ProfileCard/>} />
+                 <Route path='/create' element={<Create />} />
         
-        <Route path='/*' element={<Pnf />} />
+      
 
 
         
           <Route path='/admin-dashbord' element={<Dashbord />} />
-
-          
           <Route path='/admin-userlist' element={<UserList />} />
-          <Route path='/create' element={<Create />} />
+            <Route path='/admin-settings' element={<AdminSettings />} />
+
+            <Route path='/*' element={<Pnf />} />
+       
        
 
       </Routes>

@@ -87,13 +87,13 @@ function Header() {
               </div>
               :
               <div>
-                <img onClick={() => setDropDown(!dropDown)} src={
+                <img width={"50px"} height={'50px'}   className=" object-cover" style={{ borderRadius: '50%' }} onClick={() => setDropDown(!dropDown)} src={
                   userDp === ""
                     ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
                     : userDp.startsWith('https://lh3.googleusercontent.com/')
                       ? userDp
                       : `${BASEURL}/uploads/${userDp}`
-                } alt="userImage" width={"30px"} height={'30px'} style={{ borderRadius: '50%' }} />
+                } alt="userImage"  />
 
                 {dropDown &&
                   <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
