@@ -70,8 +70,8 @@ function Header() {
               <div className="md:hidden block ">
                 {/* <button className='bg-black  text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button> */}
                   {!token ?
-              <div className="md:block hidden">
-                <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
+              <div className="md:hidden ">
+                <button className='md:bg-black  md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
               </div>
               :
               <div>

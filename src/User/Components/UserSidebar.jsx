@@ -5,7 +5,7 @@ import React, { useContext, useState } from 'react'
 import { useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import BASEURL from '../../service/serverURL'
-import { userUpdateContext } from '../../context/contextApi'
+import { userUpdateContext } from '../../context/ResponseContextApi'
 
 function UserSidebar() {
   const {userEditresponse,setUserEditResponse} = useContext(userUpdateContext)

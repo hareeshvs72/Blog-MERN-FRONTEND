@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast, ToastContainer } from 'react-toastify'
 import { userProfileEditAPI } from '../../service/allAPI';
 import BASEURL from '../../service/serverURL';
-import { userUpdateContext } from '../../context/contextApi';
+import { userUpdateContext } from '../../context/ResponseContextApi';
 
 
 function ProfileEdit() {

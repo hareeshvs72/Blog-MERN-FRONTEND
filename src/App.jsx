@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Landing from './User/Pages/Landing'
@@ -29,6 +29,7 @@ function App() {
   setTimeout(() => {
     setPreload(false)
   }, 3000);
+  useEffect(()=>{},[authorisedUser])
   return (
     <>
       <Routes>

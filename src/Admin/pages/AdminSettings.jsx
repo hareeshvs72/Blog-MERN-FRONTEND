@@ -7,7 +7,8 @@ import AdminSidebar from "../components/AdminSidebar";
 import { updateAdminProfile } from '../../service/allAPI';
 import BASEURL from '../../service/serverURL';
 import { useContext } from 'react';
-import { adminUpdateContext } from '../../context/contextApi';
+import { adminUpdateContext } from '../../context/ResponseContextApi';
+
 
 function AdminSettings() {
   const [preview, setPreview] = useState("");

@@ -8,8 +8,12 @@ import { easeIn, easeOut, motion } from 'framer-motion'
 import { displayLatestBlogInHomeApi } from '../../service/allAPI'
 import BASEURL from '../../service/serverURL'
 import { SearchContext } from '../../../ContextApi/CreateContext'
+import { autherisedContext } from '../../context/AutherisedUserContext'
+
 
 function Landing() {
+      const { authorisedUser, setAuthorisedUser, role } = useContext(autherisedContext)
+  
   const [latestBlogs, setLatestBlogs] = useState([])
   const { setSearchKey, searchKey } = useContext(SearchContext)
   const navigate = useNavigate("")
@@ -20,7 +24,7 @@ function Landing() {
  
       displayLatestBlogs()
     
-  },[])
+  },[authorisedUser])
 
   const displayLatestBlogs = async () => {
     console.log("displayLatestBlogs");
