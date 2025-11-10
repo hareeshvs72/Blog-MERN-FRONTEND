@@ -10,7 +10,6 @@ import Pnf from './Auth/Pnf'
 import View from './User/Pages/View'
 import Dashbord from './Admin/pages/Dashbord'
 
-import Bloglist from './Admin/pages/Bloglist'
 import Create from './Admin/pages/Create'
 import Layout from './Admin/components/Layout'
 import Preload from './Auth/Preload'
@@ -18,6 +17,7 @@ import Profile from './User/Pages/Profile'
 import UserBlogList from './User/Pages/UserBlogList'
 import ProfileCard from './User/Pages/ProfileCard'
 import ProfileEdit from './User/Pages/ProfileEdit'
+import UserList from './Admin/pages/UserList'
 
 
 
@@ -48,7 +48,7 @@ function App() {
           <Route path='/admin-dashbord' element={<Dashbord />} />
 
           
-          <Route path='/admin-bloglist' element={<Bloglist />} />
+          <Route path='/admin-userlist' element={<UserList />} />
           <Route path='/create' element={<Create />} />
        
 

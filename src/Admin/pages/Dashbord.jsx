@@ -7,7 +7,7 @@ import AdminHeader from "../components/AdminHeader"
 import AdminSidebar from "../components/AdminSidebar"
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
-import { getAllBlogsAdminAPI } from "../../service/allAPI"
+import { getAllBlogsAdminAPI, updateBlogStatusAPI } from "../../service/allAPI"
 import BASEURL from "../../service/serverURL"
 import { Link } from "react-router-dom"
 
@@ -19,7 +19,9 @@ function Dashbord() {
   },[])
  
   console.log(blogs);
-  
+ 
+   
+  // display blogs
   const handileAllBlogs= async () =>{
     const token = sessionStorage.getItem("token")
     
@@ -38,6 +40,27 @@ function Dashbord() {
       }
     }
   }
+  // aprove blog status
+ 
+  const handileUpdateBlogStatus = async(blog)=>{
+    const token = sessionStorage.getItem("token")
+    
+    if(token){
+      try {
+           const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+    const result = await updateBlogStatusAPI(blog,reqHeader)
+    console.log(result.data);
+    // setBlogs(result.data)
+    
+        
+      } catch (error) {
+        
+      }
+    }
+  }
+
   return (
          <>
     <AdminHeader/>
@@ -55,7 +78,7 @@ function Dashbord() {
               <FontAwesomeIcon icon={faSquarePlus} className="text-2xl" />
             </div>
             <div>
-              <h1 className="text-center font-bold text-2xl">2</h1>
+              <h1 className="text-center font-bold text-2xl">{blogs?.length}</h1>
               <h3 className="text-center font-bold text-2xl">Blogs</h3>
             </div>
           </div>
@@ -66,7 +89,7 @@ function Dashbord() {
               <FontAwesomeIcon icon={faComments} className="text-2xl" />
             </div>
             <div>
-              <h1 className="text-center font-bold text-2xl">2</h1>
+              <h1 className="text-center font-bold text-2xl">{blogs.filter(item=>item?.status == "Aproved").length}</h1>
               <h3 className="text-center font-bold text-2xl">Aproved</h3>
             </div>
           </div>
@@ -77,7 +100,7 @@ function Dashbord() {
               <FontAwesomeIcon icon={faBook} className="text-2xl" />
             </div>
             <div>
-              <h1 className="text-center font-bold text-2xl">2</h1>
+              <h1 className="text-center font-bold text-2xl">{blogs.filter(item=>item?.status == "pending").length}</h1>
               <h3 className="text-center font-bold text-2xl">Pending</h3>
             </div>
           </div>
@@ -102,7 +125,7 @@ function Dashbord() {
                    <button className='px-4 mt-2 bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>{items?.category}</button>
                   
                   </div>
-                   <button className='px-4 my-3 w-full bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>approveed</button>
+                   <button onClick={()=>handileUpdateBlogStatus(items)} className='px-4 my-3 w-full bg-black text-green-400 font-bold py-2 hover:bg-green-400 hover:text-black'>approveed</button>
                 </div>))
               :
               <div>

@@ -101,3 +101,16 @@ export const getAllCommnetsAPI = async (blogId,reqHeader)=>{
 export const getAllBlogsAdminAPI = async (reqHeader)=>{
   return await  CommonAPi("GET",`${BASEURL}/get-allblog-admin`,{},reqHeader)
 }
+
+// get all user by admin - called by user list
+
+export const getAllUserAdminApi = async (reqHeader)=>{
+  return await  CommonAPi("GET",`${BASEURL}/alluser-admin`,{},reqHeader)
+}
+
+
+// update blog status
+
+export const updateBlogStatusAPI = async(reqBody,reqHeader)=>{
+  return await  CommonAPi("PUT",`${BASEURL}/update-status}`,reqBody,reqHeader)
+}

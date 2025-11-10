@@ -3,7 +3,7 @@ import { faBars, faCirclePlus, faListCheck } from '@fortawesome/free-solid-svg-i
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import Bloglist from '../pages/Bloglist'
+import Bloglist from '../pages/UserList'
 import Dashbord from '../pages/Dashbord'
 import AdminHeader from './AdminHeader'
 
@@ -30,8 +30,8 @@ function AdminSidebar() {
                 {/* <NavLink to={'/admin-create'} className={({isActive})=>isActive ? active :notActive} >
                      <FontAwesomeIcon icon={faCirclePlus}  className='mx-2' />Add Blog
                </NavLink> */}
-                <NavLink to={'/admin-bloglist'} className={({isActive})=>isActive ? active :notActive} >
-                     <FontAwesomeIcon icon={faListCheck}   className='mx-2'/>Blog List
+                <NavLink to={'/admin-userlist'} className={({isActive})=>isActive ? active :notActive} >
+                     <FontAwesomeIcon icon={faListCheck}   className='mx-2'/>User List
                </NavLink>
 
             </div>
