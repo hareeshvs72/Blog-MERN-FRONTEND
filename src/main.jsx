@@ -6,10 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import CreateContext from '../ContextApi/CreateContext.jsx'
 import AutherisedUserContext from './context/AutherisedUserContext.jsx'
-import ContextApi from './context/contextApi.jsx'
-
-
-
+import ResponseContextApi from './context/ResponseContextApi.jsx'
 
 
 
@@ -19,9 +16,9 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
      <GoogleOAuthProvider  clientId='746530431057-qt8hrmrblvibro7usqa6egootiatf58p.apps.googleusercontent.com'> 
         <CreateContext>
-           <ContextApi>
+           <ResponseContextApi>
            <AutherisedUserContext>  <App /></AutherisedUserContext>
-             </ContextApi>
+             </ResponseContextApi>
             </CreateContext>
         </GoogleOAuthProvider>
     </StrictMode>
