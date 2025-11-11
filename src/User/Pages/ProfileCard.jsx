@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faTwitter, faInstagram, faLinkedin, faGithub, } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router-dom";
 import BASEURL from "../../service/serverURL";
+import { autherisedContext } from "../../context/AutherisedUserContext";
 
 
 
 function ProfileCard() {
+        const { authorisedUser, setAuthorisedUser, role } = useContext(autherisedContext)
+    
     const navigate = useNavigate('')
     const [token, setToken] = useState("")
     //  const user details 
@@ -26,7 +29,7 @@ function ProfileCard() {
         if (sessionStorage.getItem("token")) {
             setToken(sessionStorage.getItem("token"))
             const users = JSON.parse(sessionStorage.getItem("users"))
-
+       
 
             // user details
             setUsername(users.username);

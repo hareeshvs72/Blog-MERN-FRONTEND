@@ -12,7 +12,7 @@ import { autherisedContext } from '../../context/AutherisedUserContext'
 
 
 function Landing() {
-      const { authorisedUser, setAuthorisedUser, role } = useContext(autherisedContext)
+      // const { authorisedUser, setAuthorisedUser, role } = useContext(autherisedContext)
   
   const [latestBlogs, setLatestBlogs] = useState([])
   const { setSearchKey, searchKey } = useContext(SearchContext)
@@ -23,8 +23,8 @@ function Landing() {
   useEffect(() => {
  
       displayLatestBlogs()
-    
-  },[authorisedUser])
+     
+  },[])
 
   const displayLatestBlogs = async () => {
     console.log("displayLatestBlogs");

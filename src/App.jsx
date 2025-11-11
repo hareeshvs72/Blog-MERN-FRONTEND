@@ -45,7 +45,7 @@ function App() {
 
          
           <Route path='/:id/view' element={<View />} />
-          <Route path='/profile' element={<Profile />} />
+          {/* <Route path='/profile' element={<Profile />} /> */}
           <Route path='/profile-edit' element={<ProfileEdit />} />
           <Route path='/user-blog' element={<UserBlogList />} />
           <Route path='/profilecard' element={<ProfileCard />} />

@@ -116,6 +116,7 @@ function LogReg({ register }) {
       toast.success("Login Sucessfully !!!")
       sessionStorage.setItem("users", JSON.stringify(result.data.user))
       sessionStorage.setItem("token", result.data.token)
+      setAuthorisedUser(true)
       setTimeout(() => {
         if (result.data.user.role == 'admin') {
           navigate('/admin-dashbord')
