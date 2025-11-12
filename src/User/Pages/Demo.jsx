@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser'
+import React from 'react'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,48 +6,13 @@ import { faPaperPlane, faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 import { motion, easeIn } from 'framer-motion'
 
-function Contact() {
-       const [name,setName] =useState("")
-       const [email,setEmail] = useState("")
-       const [message,setMessage] = useState("")
-     
-   const form = useRef();
-   
-   const templateParams = {
-    from_name:name,
-    from_email:email,
-    message:message,
-    to_email:"hareeshvs72@gmail.com",
-    to_name:"Blog (Admin)"
-   }
-
-   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-// email sent function 
-  const sendEmail = (e) => {
-    e.preventDefault();
-
-    emailjs
-      .send(serviceId, templateId, templateParams, {
-        publicKey: publicKey,
-      })
-      .then(
-        () => {
-          console.log('SUCCESS!');
-        },
-        (error) => {
-          console.log('FAILED...', error.text);
-        },
-      );
-  };
+function Demo() {
   return (
     <>
       <Header />
 
       <div className="bg-gradient-to-b from-green-50 to-white md:px-24 px-5 md:py-16 py-10">
-        {/* Page title */}
+      
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,28 +43,19 @@ const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
             <h2 className="text-2xl font-bold text-green-700 mb-6 text-center">
               Send a Message
             </h2>
-{/* form start  */}
-            <form ref={form} onSubmit={sendEmail}>
+
+            <form>
               <input
-              value={name}
-              onChange={(e)=>setName(e.target.value)}
-              name="from_name"
                 type="text"
                 placeholder="Your Name"
                 className="w-full px-4 py-3 mb-4 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               />
               <input
-              value={email}
-              onChange={(e)=>setEmail(e.target.value)}
-              name="from_email"
                 type="email"
                 placeholder="Your Email"
                 className="w-full px-4 py-3 mb-4 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               />
               <textarea
-              value={message}
-              onChange={(e)=>setMessage(e.target.value)}
-              name="message"
                 placeholder="Your Message"
                 className="w-full px-4 py-3 mb-4 border border-green-300 rounded-lg h-32 resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
               ></textarea>
@@ -171,4 +126,4 @@ const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
   )
 }
 
-export default Contact
+export default Demo

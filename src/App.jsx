@@ -20,6 +20,7 @@ import ProfileEdit from './User/Pages/ProfileEdit'
 import UserList from './Admin/pages/UserList'
 import AdminSettings from './Admin/pages/AdminSettings'
 import { autherisedContext } from './context/AutherisedUserContext'
+import Demo from './User/Pages/Demo'
 
 
 
@@ -39,6 +40,7 @@ function App() {
         <Route path='/register' element={<LogReg register />} />
           <Route path='/blog' element={<Blog />} />
            <Route path='/login' element={<LogReg />} />
+            <Route path='/demo' element={<Demo />} />
 
 
         {role == "user" && <>

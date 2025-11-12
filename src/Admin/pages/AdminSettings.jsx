@@ -117,7 +117,7 @@ function AdminSettings() {
               </div>
 
               {/* update form */}
-              <div className='bg-[#DBEAFE] md:px-10 md:py-5 p-3 rounded'>
+              <div className='bg-green-800 md:px-10 md:py-5 p-3 rounded'>
                 <div className='flex items-center relative flex-col'>
                   <label htmlFor="adminpic">
                     <img
