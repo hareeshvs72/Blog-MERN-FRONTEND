@@ -1,144 +1,183 @@
-import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faHome, faSquarePlus, faUser } from '@fortawesome/free-regular-svg-icons'
-import { faAddressCard, faBars, faPowerOff } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { easeIn, easeInOut, motion } from 'framer-motion'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import BASEURL from '../../service/serverURL'
+import {faFacebook,faInstagram,faXTwitter,} from "@fortawesome/free-brands-svg-icons";
+import { faUser, faAddressCard,faHome,faPowerOff, faBars,} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import BASEURL from "../../service/serverURL";
 
 function Header() {
-  const [navBarBtn, setNavBarbtn] = useState(false)
-  const [token, setToken] = useState("")
-  const [dropDown, setDropDown] = useState(false)
-  const [userDp, setUserDp] = useState("")
-
-  const navigate = useNavigate()
+  const [navOpen, setNavOpen] = useState(false);
+  const [token, setToken] = useState("");
+  const [dropDown, setDropDown] = useState(false);
+  const [userDp, setUserDp] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (sessionStorage.getItem('token')) {
-      const token = sessionStorage.getItem('token')
-      setToken(token)
-      const user = JSON.parse(sessionStorage.getItem('users'))
-      setUserDp(user.profile)
-      console.log(userDp)
-
+    const storedToken = sessionStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+      const user = JSON.parse(sessionStorage.getItem("users"));
+      setUserDp(user?.profile || "");
     }
-  }, [token])
-
-  useEffect(() => {
-    console.log("Updated userDp:", userDp)
-  }, [userDp])
-  // console.log(userDp);
-
+  }, []);
 
   const logout = () => {
-    sessionStorage.clear()
-    navigate('/')
-    setDropDown(false)
-    setToken("")
-  }
+    sessionStorage.clear();
+    setToken("");
+    setDropDown(false);
+    navigate("/");
+  };
+
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: -100 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: .3, ease: easeIn }}
-      >
-        {/* First Header */}
-        <div className="w-full py-1 md:px-10 px-2 flex justify-end text-green-400 items-center">
-          <a href='#' aria-label="Facebook" className='mx-2 text-2xl hover:text-black transition-colors' > <FontAwesomeIcon icon={faFacebook} /></a>
-          <a href='#' aria-label="instagram" className='mx-2 text-2xl  hover:text-black transition-colors'>  <FontAwesomeIcon icon={faInstagram} /></a>
-          <a href='#' aria-label="twitter x" className='mx-2 text-2xl  hover:text-black transition-colors'><FontAwesomeIcon icon={faXTwitter} /></a>
-        </div>
+    <motion.header
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="shadow-sm relative z-50"
+    >
+      {/* Top Bar - Social Links */}
+      <div className="w-full py-1 md:px-10 px-4 flex justify-end text-green-400 items-center bg-black/90">
+        <a
+          href="#"
+          aria-label="Facebook"
+          className="mx-2 text-xl hover:text-green-300 transition-colors"
+        >
+          <FontAwesomeIcon icon={faFacebook} />
+        </a>
+        <a
+          href="#"
+          aria-label="Instagram"
+          className="mx-2 text-xl hover:text-green-300 transition-colors"
+        >
+          <FontAwesomeIcon icon={faInstagram} />
+        </a>
+        <a
+          href="#"
+          aria-label="Twitter X"
+          className="mx-2 text-xl hover:text-green-300 transition-colors"
+        >
+          <FontAwesomeIcon icon={faXTwitter} />
+        </a>
+      </div>
 
-        {/* Second Header */}
+      {/* Main Header */}
+      <div className="bg-green-400 flex justify-between items-center px-4 md:px-10 py-2 relative">
+        {/* Logo */}
+        <Link to="/" className="flex items-center space-x-2">
+          <img
+            src="/logo.png"
+            alt="Future Talks Logo"
+            className="w-20 h-14 object-contain"
+          />
+          <span className="font-extrabold text-xl hidden sm:block">
+            Future Talks
+          </span>
+        </Link>
 
-        <div className="px-2 bg-green-400 md:flex  justify-between items-center md:py-0 py-2 md:px-10">
-          <div className='flex items-center justify-between'>
-            {/* logo and Name */}
-            <div className='hidden md:block'>
-              <img src="/logo.png" style={{ width: '100px', height: '70px' }} alt="Logo" />
-            </div>
-            {/* nav bar button */}
-            <div className='flex items-center justify-between w-full my-2'>
-              <div className='md:hidden '>
-                <button onClick={() => { setNavBarbtn(!navBarBtn) }} ><FontAwesomeIcon icon={faBars} className='text-2xl ' /></button>
-              </div>
-              {/* small screen Login */}
-              <div className="md:hidden block ">
-                {/* <button className='bg-black  text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button> */}
-                  {!token ?
-              <div className="md:hidden ">
-                <button className='md:bg-black  md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
-              </div>
-              :
-              <div>
-                <img  className="w-10 h-10 rounded-full" style={{ borderRadius: '50%' }} onClick={() => setDropDown(!dropDown)} src={
+        {/* Navbar toggle button (mobile) */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setNavOpen(!navOpen)}
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+
+        {/* Navbar Links */}
+        <nav
+          className={`${
+            navOpen
+              ? "flex flex-col absolute top-full left-0 w-full bg-black text-green-400 py-4 items-center space-y-2"
+              : "hidden md:flex md:flex-row md:items-center md:space-x-6"
+          } transition-all duration-300`}
+        >
+          <Link
+            to="/"
+            onClick={() => setNavOpen(false)}
+            className="font-bold hover:bg-black hover:text-green-400 px-4 py-2 rounded-full transition-all"
+          >
+            Home
+          </Link>
+          <Link
+            to="/blog"
+            onClick={() => setNavOpen(false)}
+            className="font-bold hover:bg-black hover:text-green-400 px-4 py-2 rounded-full transition-all"
+          >
+            Blog
+          </Link>
+          <Link
+            to="/aboutus"
+            onClick={() => setNavOpen(false)}
+            className="font-bold hover:bg-black hover:text-green-400 px-4 py-2 rounded-full transition-all"
+          >
+            About Us
+          </Link>
+          <Link
+            to="/contact"
+            onClick={() => setNavOpen(false)}
+            className="font-bold hover:bg-black hover:text-green-400 px-4 py-2 rounded-full transition-all"
+          >
+            Contact
+          </Link>
+        </nav>
+
+        {/* Login / User Profile */}
+        <div className="hidden md:flex items-center">
+          {!token ? (
+            <Link
+              to="/login"
+              className="bg-black text-green-400 font-semibold px-4 py-2 rounded-lg border-2 border-transparent hover:bg-green-400 hover:text-black hover:border-black transition-all"
+            >
+              <FontAwesomeIcon icon={faUser} className="mr-2" />
+              Login
+            </Link>
+          ) : (
+            <div className="relative">
+              <img
+                src={
                   userDp === ""
                     ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
-                    : userDp.startsWith('https://lh3.googleusercontent.com/')
-                      ? userDp
-                      : `${BASEURL}/uploads/${userDp}`  
-                } alt="userImage"  />
-
-                {dropDown &&
-                  <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
-                    <div className="py-1 ">
-                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/profilecard'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
-                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faHome} className='me-2 font-bold' /> DashBoard </p></Link>
-                      <button type='button' onClick={logout} ><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout </button>
-                    </div>
-                  </div>}
-              </div>
-
-            }
-              </div>
+                    : userDp.startsWith("https://lh3.googleusercontent.com/")
+                    ? userDp
+                    : `${BASEURL}/uploads/${userDp}`
+                }
+                alt="User"
+                className="w-10 h-10 rounded-full border-2 border-black cursor-pointer hover:scale-105 transition-all"
+                onClick={() => setDropDown(!dropDown)}
+              />
+              {dropDown && (
+                <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg ring-1 ring-black/10 py-2 z-50">
+                  <Link
+                    to="/profilecard"
+                    className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-green-100"
+                    onClick={() => setDropDown(false)}
+                  >
+                    <FontAwesomeIcon icon={faAddressCard} className="mr-2" />
+                    Profile
+                  </Link>
+                  <Link
+                    to="/create"
+                    className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-green-100"
+                    onClick={() => setDropDown(false)}
+                  >
+                    <FontAwesomeIcon icon={faHome} className="mr-2" />
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-green-100"
+                  >
+                    <FontAwesomeIcon icon={faPowerOff} className="mr-2" />
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
-          {/* nav bar */}
-          <div className={navBarBtn ? 'flex md:flex-row  flex-col md:bg-none bg-black rounded text-green-400' : ' md:flex justify-center items-center hidden'}>
-            <Link to={'/'} className='mx-3 md:my-0 my-2 font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Home</Link>
-            <Link to={'/blog'} className='mx-3 md:my-0 my-2 font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Blog</Link>
-            <Link to={'/aboutus'} className='mx-3  md:my-0 my-2 font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >AboutUS</Link>
-            <Link to={'/contact'} className='mx-3  md:my-0 my-2  font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Contact</Link>
-          </div>
-          {/* login link */}
-          <div>
-            {!token ?
-              <div className="md:block hidden">
-                <button className='md:bg-black md:text-green-400 px-3 py-2 rounded font-semibold hover:border border-black hover:bg-green-400 hover:text-black transition-all' ><Link to={'/login'} ><FontAwesomeIcon icon={faUser} />Login</Link></button>
-              </div>
-              :
-              <div className="md:block hidden">
-                <img  className="w-10 h-10 rounded-full" style={{ borderRadius: '50%' }} onClick={() => setDropDown(!dropDown)} src={
-                  userDp === ""
-                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
-                    : userDp.startsWith('https://lh3.googleusercontent.com/')
-                      ? userDp
-                      : `${BASEURL}/uploads/${userDp}`  
-                } alt="userImage"  />
-
-                {dropDown &&
-                  <div className='absolute right-0 px-4 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden'>
-                    <div className="py-1 ">
-                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/profilecard'}> <p><FontAwesomeIcon icon={faAddressCard} className='me-2' /> Profile </p></Link>
-                      <Link className='block font-semibold  py-2  text-sm text-gray-700' to={'/create'}> <p><FontAwesomeIcon icon={faHome} className='me-2 font-bold' /> DashBoard </p></Link>
-                      <button type='button' onClick={logout} ><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout </button>
-                    </div>
-                  </div>}
-              </div>
-
-            }
-          </div>
+          )}
         </div>
-
-      </motion.div>
-
-
-    </>
-  )
+      </div>
+    </motion.header>
+  );
 }
 
-export default Header
+export default Header;

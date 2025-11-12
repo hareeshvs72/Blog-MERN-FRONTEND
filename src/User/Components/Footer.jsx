@@ -6,98 +6,129 @@ import { easeIn, motion } from 'framer-motion'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-
 function Footer() {
   return (
     <>
-      <motion.div
-
-
-        className="bg-green-400  md:px-30 p-10">
-        <div className="md:grid grid-cols-3  ">
-          <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-           className='md:px-10'>
-            <div className=''>
-              <img src="/logo.png" style={{ width: '100px', height: '70px' }} alt="Logo" />
+      <footer className="bg-gradient-to-r from-green-300 to-green-500 text-black relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: easeIn }}
+          className="container mx-auto px-6 md:px-16 py-12 grid md:grid-cols-3 gap-10 items-start"
+        >
+          {/* ---------- Left Section ---------- */}
+          <div>
+            <div className="flex items-center mb-4">
+              <img
+                src="/logo.png"
+                alt="Future Talks Logo"
+                className="w-20 h-14 object-contain"
+              />
             </div>
-            <h1 className='font-bold text-2xl'>"Ideas That Shape Tomarrow !!! "</h1>
-
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-
-            className='flex items-center justify-center md:my-0 md:py-0  my-3'>
-            <Link to={'/'} className='mx-3  md:my-0 my-2 font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Home</Link>
-            <Link to={'/blog'} className='mx-3 md:my-0 my-2 font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Blog</Link>
-            <Link to={'/aboutus'} className='mx-3  md:my-0 my-2 font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >AboutUS</Link>
-            <Link to={'/contact'} className='mx-3  md:my-0 my-2  font-bold hover:bg-black hover:p-2 text-center rounded-2xl transition-all hover:text-green-400' >Contact</Link>
-          </motion.div>
-
-          <div className='flex md:flex-row flex-col'>
-            {/* bar */}
-            <div 
-          
-            className='md:w-0.5 md:mx-3 md:h-full bg-black h-0.5 w-full mb-4 '></div>
-            {/* contact info */}
-            <div >
-              <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className='flex  cursor-pointer'>
-                <FontAwesomeIcon icon={faEnvelope} className='bg-black text-green-400 rounded-full p-3 hover:bg-green-400 hover:text-black hover:border-2 border-black ' style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
-                <div className='mx-4'>
-                  <h3 className='font-bold'>Email</h3>
-                  <p>FeatureTalks@gmail.com</p>
-                </div>
-
-              </motion.div>
-              <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-               className='flex cursor-pointer my-3'>
-                <FontAwesomeIcon icon={faXTwitter} className='bg-black text-green-400 rounded-full p-3 hover:bg-green-400 hover:text-black hover:border-2 border-black ' style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
-                <div className='mx-4'>
-                  <h3 className='font-bold'>Twitter X</h3>
-                  <p>@FeatureTalks</p>
-                </div>
-
-              </motion.div>
-
-              <motion.div 
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9 }}
-              className='flex items-center  '>
-                <input type="text" placeholder='Enter Email' className=' h-9 px-2 placeholder:text-black focus:bg-black focus:text-green-400 focus:outline-2 focus:outline-green-600 outline-2 outline-black transition-all' />
-                <button className='bg-black text-green-400 px-2  mx-2 h-9 hover:bg-green-400 hover:text-black hover:border-2 transition-colors ' ><FontAwesomeIcon icon={faArrowRight} /></button>
-              </motion.div>
-
-            </div>
-
+            <h1 className="font-extrabold text-2xl mb-2">
+              "Ideas That Shape Tomorrow!"
+            </h1>
+            <p className="text-gray-800 text-sm leading-relaxed max-w-sm">
+              Future Talks is a modern blogging platform empowering thinkers and creators
+              to share ideas, inspire change, and connect the world through meaningful conversations.
+            </p>
           </div>
-        </div>
 
+          {/* ---------- Middle Section (Quick Links) ---------- */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeIn }}
+            className="flex flex-col items-start md:items-center"
+          >
+            <h3 className="font-bold text-xl mb-4">Quick Links</h3>
+            <div className="flex flex-col gap-3 text-lg font-semibold">
+              <Link
+                to="/"
+                className="hover:text-green-800 hover:translate-x-1 transition-all duration-300"
+              >
+                Home
+              </Link>
+              <Link
+                to="/blog"
+                className="hover:text-green-800 hover:translate-x-1 transition-all duration-300"
+              >
+                Blog
+              </Link>
+              <Link
+                to="/aboutus"
+                className="hover:text-green-800 hover:translate-x-1 transition-all duration-300"
+              >
+                About Us
+              </Link>
+              <Link
+                to="/contact"
+                className="hover:text-green-800 hover:translate-x-1 transition-all duration-300"
+              >
+                Contact
+              </Link>
+            </div>
+          </motion.div>
 
-      </motion.div>
-      <div className='bg-black'>
-        <div>
-          <motion.p 
-           initial={{opacity:0}}
-           whileInView={{opacity:1}}
-           transition={{duration:.8 , ease:easeIn}}
-          className='text-green-400 text-center p-2'>@Designed By Hareesh Vs</motion.p>
-        </div>
-      </div>
+          {/* ---------- Right Section (Contact + Newsletter) ---------- */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeIn }}
+            className="space-y-5"
+          >
+            <h3 className="font-bold text-xl mb-3">Stay Connected</h3>
 
+            {/* Email */}
+            <div className="flex items-center gap-3">
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                className="bg-black text-green-400 p-3 rounded-full hover:bg-green-400 hover:text-black transition-all"
+              />
+              <div>
+                <p className="font-semibold text-sm">Email</p>
+                <p className="text-gray-800 text-sm">FutureTalks@gmail.com</p>
+              </div>
+            </div>
 
+            {/* Twitter */}
+            <div className="flex items-center gap-3">
+              <FontAwesomeIcon
+                icon={faXTwitter}
+                className="bg-black text-green-400 p-3 rounded-full hover:bg-green-400 hover:text-black transition-all"
+              />
+              <div>
+                <p className="font-semibold text-sm">Twitter X</p>
+                <p className="text-gray-800 text-sm">@FutureTalks</p>
+              </div>
+            </div>
 
+            {/* Newsletter */}
+            <div className="flex items-center mt-4">
+              <input
+                type="text"
+                placeholder="Enter your email"
+                className="flex-1 px-3 py-2 rounded-l-lg text-black placeholder-gray-700 border border-black focus:outline-none focus:ring-2 focus:ring-black"
+              />
+              <button className="bg-black text-green-400 px-4 py-2 rounded-r-lg hover:bg-green-400 hover:text-black transition-all duration-300">
+                <FontAwesomeIcon icon={faArrowRight} />
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* ---------- Bottom Bar ---------- */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="bg-black py-4 text-center"
+        >
+          <p className="text-green-400 text-sm font-semibold">
+            © {new Date().getFullYear()} Future Talks — Designed by Hareesh Vs
+          </p>
+        </motion.div>
+      </footer>
     </>
   )
 }
