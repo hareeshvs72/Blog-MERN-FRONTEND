@@ -11,9 +11,7 @@ import View from './User/Pages/View'
 import Dashbord from './Admin/pages/Dashbord'
 
 import Create from './Admin/pages/Create'
-import Layout from './Admin/components/Layout'
 import Preload from './Auth/Preload'
-import Profile from './User/Pages/Profile'
 import UserBlogList from './User/Pages/UserBlogList'
 import ProfileCard from './User/Pages/ProfileCard'
 import ProfileEdit from './User/Pages/ProfileEdit'
@@ -21,6 +19,7 @@ import UserList from './Admin/pages/UserList'
 import AdminSettings from './Admin/pages/AdminSettings'
 import { autherisedContext } from './context/AutherisedUserContext'
 import Demo from './User/Pages/Demo'
+import BlogManager from './Admin/pages/BlogManager'
 
 
 
@@ -60,6 +59,7 @@ function App() {
           <Route path='/admin-dashbord' element={<Dashbord />} />
           <Route path='/admin-userlist' element={<UserList />} />
           <Route path='/admin-settings' element={<AdminSettings />} />
+          <Route path='/admin-blogmanager' element={<BlogManager />} />
         </>}
 
         <Route path='/*' element={<Pnf />} />
