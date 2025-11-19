@@ -5,11 +5,10 @@ import { faUser, faCalendar, faCommentDots, faShareAlt, faPen, faTrash, faCopy, 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Footer from "../Components/Footer";
 import { Link, useParams } from 'react-router-dom';
-import { createNewCommentAPI, getAllCommnetsAPI, getSingleBlogViewAPI } from '../../service/allAPI';
+import { createNewCommentAPI, getAllCommnetsAPI, getSingleBlogViewAPI, removeCommentAPi, updateCommentApi } from '../../service/allAPI';
 import BASEURL from '../../service/serverURL';
 import { toast, ToastContainer } from 'react-toastify'
 import moment from 'moment'
-import { faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import {FacebookShareButton,FacebookIcon, WhatsappShareButton, WhatsappIcon} from 'react-share'
 
 function View() {
@@ -29,6 +28,9 @@ function View() {
   const [shareModale,setShareModale] = useState(false)
   const [shareURL,setShareUrl] = useState("")
   const [userId,setUserId] = useState()
+  const [updateBtn,setUpdateBtn] = useState(false)
+  const [selectedComment, setSelectedComment] = useState(null);
+
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       setToken(sessionStorage.getItem("token"))
@@ -97,6 +99,78 @@ const handileCopyUrl = ()=>{
       } catch (error) { }
     }
   }
+  //  handile edit button
+const handileEditButton = (commentDetail) => {
+  setText(commentDetail.text);
+  setUpdateBtn(true);
+  setSelectedComment(commentDetail); 
+};
+
+  // update comment 
+  const updateComment = async () => {
+  console.log("inside update comment");
+
+  if (!selectedComment) {
+    toast.error("No comment selected!");
+    return;
+  }
+
+  if (!text) {
+    toast.info("Please fill the comment box");
+    return;
+  }
+
+  const reqHeader = {
+    "Authorization": `Bearer ${token}`,
+    
+  };
+
+  const reqBody = {
+    _id: selectedComment._id,
+    text: text,
+    userId:selectedComment.userId
+  };
+
+  try {
+    const result = await updateCommentApi(reqBody, reqHeader);
+
+    if (result.status === 200) {
+      toast.success("Comment Updated!");
+      setText("");
+      setUpdateBtn(false);
+      setSelectedComment(null);
+      setRefresh(prev=>!prev); // refresh comments
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// delete comment
+
+const handileDeleteComment = async(commentID)=>{
+  console.log("inside handileDeleteComment");
+  if(token){
+     const reqHeader = {
+    "Authorization": `Bearer ${token}`,
+    
+  };
+    try {
+     const result = await removeCommentAPi(commentID,reqHeader)
+     if(result.status == 200){
+      toast.success("Delete SuccessFully !!!")
+      setRefresh(prev=>!prev)
+     }
+     else{
+      console.log(result.response.data);
+      
+     }
+  } catch (error) {
+    console.log(error);
+    
+  }
+  }
+}
   
   return (
     <>
@@ -187,18 +261,29 @@ const handileCopyUrl = ()=>{
                     rows="3"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none resize-none"
                   ></textarea>
-
+{updateBtn ?
+                 
                   <button
+                   onClick={updateComment}
+
+
+                    type="button"
+                    className="mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  >
+                   update
+                  </button>
+                  :
+                   <button
                     onClick={addNewCommnet}
                     type="button"
                     className="mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                   >
-                    Post Comment
-                  </button>
+                  Post Comment
+                  </button>}
                 </div>
               </div>
 
-              {/* Existing Comments */}
+              {/* coomets dupliacte */}
               <div className="space-y-5">
 
                 {allComments?.length > 0 &&
@@ -219,23 +304,23 @@ const handileCopyUrl = ()=>{
                       {/* Comment Box */}
                       <div className="bg-gray-100 p-4 rounded-xl w-full shadow-sm border border-gray-200">
 
-                        {/* Username + Edit/Delete buttons */}
+                        {/* Username */}
                         <div className="flex justify-between items-center">
                           <h4 className="font-semibold text-gray-800">
                             {items?.userId?.username}
                           </h4>
 
-                          {/* UI ONLY (No logic) */}
+                          {/* edite and comment */}
                          {
                          items?.userId?._id == userId &&
-                          <di v className="opacity-0 group-hover:opacity-100 transition-all flex gap-3">
-                            <button className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1">
+                          <div className=" flex gap-3">
+                            <button onClick={()=>{handileEditButton(items)}} className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1">
                               <FontAwesomeIcon icon={faPen} /> Edit
                             </button>
-                            <button className="text-red-600 hover:text-red-800 text-sm font-semibold flex items-center gap-1">
+                            <button onClick={()=>{handileDeleteComment(items?._id)}} className="text-red-600 hover:text-red-800 text-sm font-semibold flex items-center gap-1">
                               <FontAwesomeIcon icon={faTrash} /> Delete
                             </button>
-                          </di>}
+                          </div>}
                         </div>
 
                         {/* Text */}

@@ -99,6 +99,18 @@ export const getAllCommnetsAPI = async (blogId,reqHeader)=>{
   return await  CommonAPi("GET",`${BASEURL}/all-comment/${blogId}`,{},reqHeader)
 }
 
+// update commnet called by view page
+
+export const updateCommentApi = async (reqBody,reqHeader)=>{
+  return await  CommonAPi("PUT",`${BASEURL}/update/comment`,reqBody,reqHeader)
+}
+
+// delete commnet called by view page
+
+export const removeCommentAPi = async (blogId,reqHeader)=>{
+  return await  CommonAPi("DELETE",`${BASEURL}/delete/${blogId}/comment`,{},reqHeader)
+}
+
 
 // ---------------------- admin -----------------------------------
 
