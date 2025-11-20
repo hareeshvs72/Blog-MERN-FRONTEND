@@ -84,6 +84,11 @@ export const removeIndividualBlogsAPI = async(blogId)=>{
   return await  CommonAPi("DELETE",`${BASEURL}/delete-blogs/${blogId}`)
 }
 
+// like the blog - called by view componnet
+export const likeBlogApi = async(blogId,reqHeader)=>{
+  return await  CommonAPi("PUT",`${BASEURL}/blog/${blogId}/like`,{},reqHeader)
+}
+
 
 // ----------------------- commnets  -----------------------
 

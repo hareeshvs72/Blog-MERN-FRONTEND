@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import { faUser, faCalendar, faCommentDots, faShareAlt, faPen, faTrash, faCopy, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp as solidThumb } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp as regularThumb } from "@fortawesome/free-regular-svg-icons";
 import Footer from "../Components/Footer";
 import { Link, useParams } from 'react-router-dom';
-import { createNewCommentAPI, getAllCommnetsAPI, getSingleBlogViewAPI, removeCommentAPi, updateCommentApi } from '../../service/allAPI';
+import { createNewCommentAPI, getAllCommnetsAPI, getSingleBlogViewAPI, likeBlogApi, removeCommentAPi, updateCommentApi } from '../../service/allAPI';
 import BASEURL from '../../service/serverURL';
 import { toast, ToastContainer } from 'react-toastify'
 import moment from 'moment'
-import {FacebookShareButton,FacebookIcon, WhatsappShareButton, WhatsappIcon} from 'react-share'
+import { FacebookShareButton, FacebookIcon, WhatsappShareButton, WhatsappIcon } from 'react-share'
 
 function View() {
   const [blog, setBlog] = useState({})
@@ -25,12 +27,13 @@ function View() {
   const [allComments, setAllComments] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [userDp, setUserdp] = useState("")
-  const [shareModale,setShareModale] = useState(false)
-  const [shareURL,setShareUrl] = useState("")
-  const [userId,setUserId] = useState()
-  const [updateBtn,setUpdateBtn] = useState(false)
+  const [shareModale, setShareModale] = useState(false)
+  const [shareURL, setShareUrl] = useState("")
+  const [userId, setUserId] = useState()
+  const [updateBtn, setUpdateBtn] = useState(false)
   const [selectedComment, setSelectedComment] = useState(null);
-
+const [likeCount, setLikeCount] = useState(0);
+const [likedByUser, setLikedByUser] = useState(false);
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       setToken(sessionStorage.getItem("token"))
@@ -39,26 +42,26 @@ function View() {
       displayBlogView()
       displayCommnets()
       setUserId(users._id)
-        setShareUrl(window.location.href)
-      
+      setShareUrl(window.location.href)
+
     }
   }, [token, refresh])
 
   console.log(userId);
-  
+
   // browser url
   // console.log("url of brwser " , shareURL);
-  
-// copy url 
-console.log(allComments);
+
+  // copy url 
+  console.log(allComments);
 
 
-const handileCopyUrl = ()=>{
-  console.log("inside copy url function");
-  
-  navigator.clipboard.writeText(shareURL)
-  
-}
+  const handileCopyUrl = () => {
+    console.log("inside copy url function");
+
+    navigator.clipboard.writeText(shareURL)
+
+  }
 
   // Display comments
   const displayCommnets = async () => {
@@ -95,83 +98,104 @@ const handileCopyUrl = ()=>{
         const result = await getSingleBlogViewAPI(id, reqHeader)
         if (result.status == 200) {
           setBlog(result.data)
+             // SET LIKE COUNT
+        setLikeCount(result.data.likes?.length || 0);
+
+        // CHECK IF THIS USER LIKED THE BLOG
+        const user = JSON.parse(sessionStorage.getItem("users"));
+       setLikedByUser(result.data.likes?.includes(user.email));
+
         }
       } catch (error) { }
     }
   }
   //  handile edit button
-const handileEditButton = (commentDetail) => {
-  setText(commentDetail.text);
-  setUpdateBtn(true);
-  setSelectedComment(commentDetail); 
-};
+  const handileEditButton = (commentDetail) => {
+    setText(commentDetail.text);
+    setUpdateBtn(true);
+    setSelectedComment(commentDetail);
+  };
 
   // update comment 
   const updateComment = async () => {
-  console.log("inside update comment");
+    console.log("inside update comment");
 
-  if (!selectedComment) {
-    toast.error("No comment selected!");
-    return;
+    if (!selectedComment) {
+      toast.error("No comment selected!");
+      return;
+    }
+
+    if (!text) {
+      toast.info("Please fill the comment box");
+      return;
+    }
+
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`,
+
+    };
+
+    const reqBody = {
+      _id: selectedComment._id,
+      text: text,
+      userId: selectedComment.userId
+    };
+
+    try {
+      const result = await updateCommentApi(reqBody, reqHeader);
+
+      if (result.status === 200) {
+        toast.success("Comment Updated!");
+        setText("");
+        setUpdateBtn(false);
+        setSelectedComment(null);
+        setRefresh(prev => !prev); // refresh comments
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // delete comment
+
+  const handileDeleteComment = async (commentID) => {
+    console.log("inside handileDeleteComment");
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`,
+
+      };
+      try {
+        const result = await removeCommentAPi(commentID, reqHeader)
+        if (result.status == 200) {
+          toast.success("Delete SuccessFully !!!")
+          setRefresh(prev => !prev)
+        }
+        else {
+          console.log(result.response.data);
+
+        }
+      } catch (error) {
+        console.log(error);
+
+      }
+    }
   }
-
-  if (!text) {
-    toast.info("Please fill the comment box");
-    return;
-  }
-
+  // handile like button
+const handleLike = async () => {
   const reqHeader = {
     "Authorization": `Bearer ${token}`,
-    
   };
 
-  const reqBody = {
-    _id: selectedComment._id,
-    text: text,
-    userId:selectedComment.userId
-  };
+  const result = await likeBlogApi(id, reqHeader);
 
-  try {
-    const result = await updateCommentApi(reqBody, reqHeader);
-
-    if (result.status === 200) {
-      toast.success("Comment Updated!");
-      setText("");
-      setUpdateBtn(false);
-      setSelectedComment(null);
-      setRefresh(prev=>!prev); // refresh comments
-    }
-  } catch (error) {
-    console.log(error);
+  if (result.status === 200) {
+    setLikeCount(result.data.likes);  
+    setLikedByUser(result.data.likedByUser);
   }
 };
 
-// delete comment
 
-const handileDeleteComment = async(commentID)=>{
-  console.log("inside handileDeleteComment");
-  if(token){
-     const reqHeader = {
-    "Authorization": `Bearer ${token}`,
-    
-  };
-    try {
-     const result = await removeCommentAPi(commentID,reqHeader)
-     if(result.status == 200){
-      toast.success("Delete SuccessFully !!!")
-      setRefresh(prev=>!prev)
-     }
-     else{
-      console.log(result.response.data);
-      
-     }
-  } catch (error) {
-    console.log(error);
-    
-  }
-  }
-}
-  
   return (
     <>
       <Header />
@@ -228,9 +252,24 @@ const handileDeleteComment = async(commentID)=>{
 
               {/* SHARE BUTTON  */}
               <div className="my-6 flex justify-end">
-                <button onClick={()=>setShareModale(true)} className="px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-700 flex items-center gap-2">
+                <button
+                  onClick={handleLike}
+                  className="mx-2 flex items-center gap-2 px-4 py-2 rounded-lg border hover:bg-gray-100 transition"
+                >
+                  <FontAwesomeIcon
+                    icon={likedByUser ? solidThumb : regularThumb}
+                    style={{ color: likedByUser ? "#2563eb" : "#6b7280" }}
+                  />
+
+                  <span className="font-medium">{likeCount}</span>
+                </button>
+
+
+
+                <button onClick={() => setShareModale(true)} className="px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-700 flex items-center gap-2">
                   <FontAwesomeIcon icon={faShareAlt} /> Share
                 </button>
+
               </div>
 
             </div>
@@ -261,25 +300,25 @@ const handileDeleteComment = async(commentID)=>{
                     rows="3"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none resize-none"
                   ></textarea>
-{updateBtn ?
-                 
-                  <button
-                   onClick={updateComment}
+                  {updateBtn ?
+
+                    <button
+                      onClick={updateComment}
 
 
-                    type="button"
-                    className="mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                  >
-                   update
-                  </button>
-                  :
-                   <button
-                    onClick={addNewCommnet}
-                    type="button"
-                    className="mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                  >
-                  Post Comment
-                  </button>}
+                      type="button"
+                      className="mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                    >
+                      update
+                    </button>
+                    :
+                    <button
+                      onClick={addNewCommnet}
+                      type="button"
+                      className="mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                    >
+                      Post Comment
+                    </button>}
                 </div>
               </div>
 
@@ -289,7 +328,7 @@ const handileDeleteComment = async(commentID)=>{
                 {allComments?.length > 0 &&
                   allComments.map((items, index) => (
                     <div key={index} className="flex items-start space-x-3 group">
-                      
+
                       {/* DP */}
                       <img
                         src={items?.userId?.profile
@@ -311,16 +350,16 @@ const handileDeleteComment = async(commentID)=>{
                           </h4>
 
                           {/* edite and comment */}
-                         {
-                         items?.userId?._id == userId &&
-                          <div className=" flex gap-3">
-                            <button onClick={()=>{handileEditButton(items)}} className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1">
-                              <FontAwesomeIcon icon={faPen} /> Edit
-                            </button>
-                            <button onClick={()=>{handileDeleteComment(items?._id)}} className="text-red-600 hover:text-red-800 text-sm font-semibold flex items-center gap-1">
-                              <FontAwesomeIcon icon={faTrash} /> Delete
-                            </button>
-                          </div>}
+                          {
+                            items?.userId?._id == userId &&
+                            <div className=" flex gap-3">
+                              <button onClick={() => { handileEditButton(items) }} className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1">
+                                <FontAwesomeIcon icon={faPen} /> Edit
+                              </button>
+                              <button onClick={() => { handileDeleteComment(items?._id) }} className="text-red-600 hover:text-red-800 text-sm font-semibold flex items-center gap-1">
+                                <FontAwesomeIcon icon={faTrash} /> Delete
+                              </button>
+                            </div>}
                         </div>
 
                         {/* Text */}
@@ -350,59 +389,59 @@ const handileDeleteComment = async(commentID)=>{
 
       {/* share modale */}
       {
-      shareModale&&
+        shareModale &&
         <div>
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative">
-            {/* Close Button */}
-            <button onClick={()=>setShareModale(false)} className="absolute right-3 top-3">
-              <FontAwesomeIcon icon={faXmark} className="h-5 w-5 " />
-            </button>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative">
+              {/* Close Button */}
+              <button onClick={() => setShareModale(false)} className="absolute right-3 top-3">
+                <FontAwesomeIcon icon={faXmark} className="h-5 w-5 " />
+              </button>
 
 
-            <h2 className="text-xl font-semibold mb-5">Share this post</h2>
+              <h2 className="text-xl font-semibold mb-5">Share this post</h2>
 
 
-            
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="flex flex-col items-center gap-2 p-3 border rounded-xl hover:bg-gray-100 transition cursor-pointer">
-                 {/* <FontAwesomeIcon icon={faWhatsapp} className="text-2xl text-green-500" /> */}
-                   <WhatsappShareButton url={shareURL} >
+
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="flex flex-col items-center gap-2 p-3 border rounded-xl hover:bg-gray-100 transition cursor-pointer">
+                  {/* <FontAwesomeIcon icon={faWhatsapp} className="text-2xl text-green-500" /> */}
+                  <WhatsappShareButton url={shareURL} >
                     <WhatsappIcon size={32} round={true} />
                   </WhatsappShareButton>
-                <span className="text-sm">WhatsApp</span>
-              </div>
+                  <span className="text-sm">WhatsApp</span>
+                </div>
 
 
-              <div className="flex flex-col items-center gap-2 p-3 border rounded-xl hover:bg-gray-100 transition cursor-pointer">
-                {/* <FontAwesomeIcon icon={faFacebook} className="text-2xl text-blue-500" /> */}
+                <div className="flex flex-col items-center gap-2 p-3 border rounded-xl hover:bg-gray-100 transition cursor-pointer">
+                  {/* <FontAwesomeIcon icon={faFacebook} className="text-2xl text-blue-500" /> */}
                   <FacebookShareButton url={shareURL} >
                     <FacebookIcon size={32} round={true} />
                   </FacebookShareButton>
-                <span className="text-sm">Facebook</span>
+                  <span className="text-sm">Facebook</span>
+                </div>
+
+
+                <div onClick={() => { handileCopyUrl() }} className="flex flex-col items-center gap-2 p-3 border rounded-xl hover:bg-gray-100 transition cursor-pointer">
+                  {/* <Copy className="h-7 w-7" /> */}
+                  <FontAwesomeIcon icon={faCopy} className="text-2xl" />
+                  <span className="text-sm">Copy Link</span>
+                </div>
               </div>
 
 
-              <div onClick={()=>{handileCopyUrl()}} className="flex flex-col items-center gap-2 p-3 border rounded-xl hover:bg-gray-100 transition cursor-pointer">
-                {/* <Copy className="h-7 w-7" /> */}
-                 <FontAwesomeIcon icon={faCopy}  className="text-2xl" />
-                <span className="text-sm">Copy Link</span>
-              </div>
-            </div>
-
-
-            {/* Copy URL Box */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between bg-gray-100 p-3 rounded-xl cursor-pointer">
-                <span className="truncate text-sm text-green-900"> {shareURL} </span>
-                <FontAwesomeIcon icon={faCopy} onClick={()=>{handileCopyUrl()}}  className="h-5 w-5" />
+              {/* Copy URL Box */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between bg-gray-100 p-3 rounded-xl cursor-pointer">
+                  <span className="truncate text-sm text-green-900"> {shareURL} </span>
+                  <FontAwesomeIcon icon={faCopy} onClick={() => { handileCopyUrl() }} className="h-5 w-5" />
+                </div>
               </div>
             </div>
           </div>
+
         </div>
 
-      </div>
-      
       }
 
       <Footer />
